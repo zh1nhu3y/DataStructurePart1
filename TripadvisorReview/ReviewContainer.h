@@ -1,3 +1,7 @@
+/**
+ *  ReviewContainer.h
+ */
+
 #include <iostream>
 #include <fstream>
 #include <sstream>
@@ -5,18 +9,14 @@
 #include <algorithm>
 #include <cctype>
 
-// Constants for initial capacity and file paths
-static const int INITIAL_CAPACITY_REVIEWS = 10;
-const std::string CLEANED_FILE = "C:\\Users\\lawme\\OneDrive - Asia Pacific University\\Degree\\Sem 2\\Data Structure\\Assignment\\DSTR_P1_Data\\Organized_hotel_reviews.csv"; // Output file
+static const int INITIAL_CAPACITY_REVIEWS = 1000;
 
-// Define structure to hold hotel reviews and ratings
 struct Review
 {
     std::string text;
     int rating;
 };
 
-// Custom container to store reviews and ratings using a dynamic array
 class ReviewContainer
 {
 private:
@@ -24,7 +24,6 @@ private:
     int size;
     int capacity;
 
-    // Function to resize the dynamic array when needed
     void resize()
     {
         capacity *= 2;
@@ -37,17 +36,14 @@ private:
         reviews = newReviews;
     }
 
-    // Helper function to clean a review text by removing unwanted characters
     std::string cleanReviewText(const std::string &text)
     {
         std::string cleaned = text;
-        // Remove unwanted characters like punctuation
         cleaned.erase(std::remove_if(cleaned.begin(), cleaned.end(), [](unsigned char c)
                                      {
                                          return std::ispunct(c); // Removes punctuation
                                      }),
                       cleaned.end());
-        // Convert to lowercase
         std::transform(cleaned.begin(), cleaned.end(), cleaned.begin(), ::tolower);
         return cleaned;
     }
@@ -63,7 +59,6 @@ public:
         delete[] reviews;
     }
 
-    // Function to add a review to the container
     void addReview(const std::string &reviewText, int rating)
     {
         if (size >= capacity)
@@ -89,9 +84,10 @@ public:
         return {};
     }
 
-    // Load and clean reviews from a CSV file
     void loadFromFile(const std::string &filename)
     {
+        std::cout << "Loading file from: " << filename << std::endl;
+
         std::ifstream file(filename);
         std::string line;
         bool skipHeader = true;
@@ -114,7 +110,6 @@ public:
             std::string review, ratingStr;
             int rating;
 
-            // Handle reviews with quotes
             if (line.find('"') != std::string::npos)
             {
                 size_t firstQuote = line.find('"');
@@ -148,10 +143,10 @@ public:
                 std::cerr << "Error: Invalid rating value for review. Skipping review." << std::endl;
             }
         }
+        std::cout << "File loaded" << std::endl;
         file.close();
     }
 
-    // Save cleaned reviews to a new CSV file
     void saveToFile(const std::string &filename)
     {
         std::ofstream outFile(filename);
@@ -172,19 +167,3 @@ public:
         std::cout << "Cleaned data saved to: " << filename << std::endl;
     }
 };
-
-// int main()
-// {
-//     // Initialize the review container
-//     ReviewContainer reviews;
-
-//     // Load reviews from the raw CSV file
-//     reviews.loadFromFile("C:\\Users\\lawme\\OneDrive - Asia Pacific University\\Degree\\Sem 2\\Data Structure\\Assignment\\DSTR_P1_Data\\tripadvisor_hotel_reviews.csv");
-
-//     // Save the cleaned reviews to a new CSV file
-//     reviews.saveToFile("C:\\Users\\lawme\\OneDrive - Asia Pacific University\\Degree\\Sem 2\\Data Structure\\Assignment\\DSTR_P1_Data\\organized_hotel_reviews.csv");
-
-//     std::cout << "Data cleaning complete. Cleaned data saved to " << CLEANED_FILE << std::endl;
-
-//     return 0;
-// }

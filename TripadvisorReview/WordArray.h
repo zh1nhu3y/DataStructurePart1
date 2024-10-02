@@ -1,3 +1,7 @@
+/**
+ *  WordArray.h
+ */
+
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -66,6 +70,7 @@ public:
 
     void loadWordsFromFile(const std::string &filename)
     {
+        std::cout << "Loading file from: " << filename << std::endl;
         std::ifstream file(filename);
         if (!file.is_open())
         {
@@ -79,6 +84,7 @@ public:
             addWord(word);
         }
         file.close();
+        std::cout << "Words file loaded" << std::endl;
     }
 
     int getWordCount() const
