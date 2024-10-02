@@ -1,35 +1,40 @@
-#include <iostream>
+/** #include <iostream>
 #include <fstream>
 #include <sstream>
-#include "tripadvisor_hotel_reviews.cpp"  // No .h file; directly use the cpp file
+#include "tripadvisor_hotel_reviews.cpp" // No .h file; directly use the cpp file
 #include "positive_and_negative_words.cpp"
 
 // Function to count positive and negative words in a review and write results to a file
-void analyzeSentiment(const Review& review, const WordArray& positiveWords, const WordArray& negativeWords, std::ofstream& outFile) {
+void analyzeSentiment(const Review &review, const WordArray &positiveWords, const WordArray &negativeWords, std::ofstream &outFile)
+{
     int positiveCount = 0, negativeCount = 0;
     std::istringstream words(review.text);
     std::string word;
 
-    while (words >> word) {
+    while (words >> word)
+    {
         // Normalize word to lower case for comparison
         std::string lowerWord = word;
         std::transform(lowerWord.begin(), lowerWord.end(), lowerWord.begin(), ::tolower);
-        
-        if (positiveWords.contains(lowerWord)) {
+
+        if (positiveWords.contains(lowerWord))
+        {
             positiveCount++;
         }
-        if (negativeWords.contains(lowerWord)) {
+        if (negativeWords.contains(lowerWord))
+        {
             negativeCount++;
         }
     }
 
     // Raw Sentiment Score
     int rawScore = positiveCount - negativeCount;
-    int N = positiveCount + negativeCount;  // Total positive and negative word count
+    int N = positiveCount + negativeCount; // Total positive and negative word count
 
     // Normalized Score calculation
     float normalizedScore = 0.0;
-    if (N > 0) {
+    if (N > 0)
+    {
         float minRawScore = -N;
         float maxRawScore = N;
         normalizedScore = (rawScore - minRawScore) / (maxRawScore - minRawScore);
@@ -46,24 +51,37 @@ void analyzeSentiment(const Review& review, const WordArray& positiveWords, cons
     outFile << "============================" << std::endl;
 }
 
-int main() {
+int main()
+{
+    // Initialize the review container
     ReviewContainer reviews;
-    reviews.loadFromFile("/Users/elvin/Documents/APU/Data Structures/Assignment/Data Storage Code/organized_hotel_reviews.csv");
+
+    // Load reviews from the raw CSV file
+    reviews.loadFromFile("C:/Users/lawme/OneDrive - Asia Pacific University/Degree/Sem 2/Data Structure/Assignment/DSTR_P1_Data/tripadvisor_hotel_reviews.csv");
+
+    // Save the cleaned reviews to a new CSV file
+    reviews.saveToFile("C:/Users/lawme/OneDrive - Asia Pacific University/Degree/Sem 2/Data Structure/Assignment/DSTR_P1_Data/organized_hotel_reviews.csv");
+
+    std::cout << "Data cleaning complete. Cleaned data saved to " << CLEANED_FILE << std::endl;
+
+    reviews.loadFromFile("C:/Users/lawme/OneDrive - Asia Pacific University/Degree/Sem 2/Data Structure/Assignment/DSTR_P1_Data/organized_hotel_reviews.csv");
 
     WordArray positiveWords, negativeWords;
-    positiveWords.loadWordsFromFile("/Users/elvin/Documents/APU/Data Structures/Assignment/Assignment Questions/positive-words.txt");
-    negativeWords.loadWordsFromFile("/Users/elvin/Documents/APU/Data Structures/Assignment/Assignment Questions/negative-words.txt");
+    positiveWords.loadWordsFromFile("C:/Users/lawme/OneDrive - Asia Pacific University/Degree/Sem 2/Data Structure/Assignment/DSTR_P1_Data/positive-words.txt");
+    negativeWords.loadWordsFromFile("C:/Users/lawme/OneDrive - Asia Pacific University/Degree/Sem 2/Data Structure/Assignment/DSTR_P1_Data/negative-words.txt");
 
     // Open the file for writing the results
-    std::ofstream outFile("/Users/elvin/Documents/APU/Data Structures/Assignment/Data Storage Code/sentiment_analysis_results.txt");
+    std::ofstream outFile("C:/Users/lawme/OneDrive - Asia Pacific University/Degree/Sem 2/Data Structure/Assignment/DSTR_P1_Data/sentiment_analysis_results.txt");
 
-    if (!outFile.is_open()) {
+    if (!outFile.is_open())
+    {
         std::cerr << "Error opening file for writing results." << std::endl;
         return 1;
     }
 
     // Analyze each review and write results to the file
-    for (int i = 0; i < reviews.getReviewCount(); i++) {
+    for (int i = 0; i < reviews.getReviewCount(); i++)
+    {
         Review review = reviews.getReview(i);
         analyzeSentiment(review, positiveWords, negativeWords, outFile);
     }
@@ -75,3 +93,4 @@ int main() {
 
     return 0;
 }
+*/
