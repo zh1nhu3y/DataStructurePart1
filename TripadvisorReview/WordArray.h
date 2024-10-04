@@ -2,6 +2,9 @@
  *  WordArray.h
  */
 
+#ifndef WORD_ARRAY_H
+#define WORD_ARRAY_H
+
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -92,3 +95,4 @@ public:
         return size; // Add this method to get the count of words loaded
     }
 };
+#endif // WORD_ARRAY_H
