@@ -90,7 +90,7 @@ public:
         outputFile << "Total Positive Words: " << totalPositiveWords << "\n";
         outputFile << "Total Negative Words: " << totalNegativeWords << "\n";
 
-        // 2. Overall Sentiment Trend
+        // 2. Overall Sentiment Trend - overall direction of sentiment (positive or negative)
         double sentimentRatio = totalReviews > 0 ? static_cast<double>(totalPositiveWords) / (totalPositiveWords + totalNegativeWords) : 0;
         outputFile << "\n2. OVERALL SENTIMENT TREND\n";
         outputFile << "Sentiment Ratio (positive words / total sentiment words): "
@@ -313,13 +313,20 @@ private:
         }
     }
 
-    void analyzeReview(const std::string &review)
+    void analyzeReview(const string &review)
     {
         cout << "Analyzing review: " << review << endl;
         istringstream iss(review);
         string word;
         while (iss >> word)
         {
+            // Normalize word: convert to lowercase
+            transform(word.begin(), word.end(), word.begin(), ::tolower);
+
+            // Remove any trailing punctuation (for simplicity, just common cases)
+            word.erase(remove_if(word.begin(), word.end(), ::ispunct), word.end());
+
+            // Check if it's a positive or negative word
             if (positiveWords.contains(word))
             {
                 totalPositiveWords++;
