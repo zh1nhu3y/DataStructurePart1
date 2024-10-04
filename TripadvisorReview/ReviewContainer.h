@@ -2,6 +2,9 @@
  *  ReviewContainer.h
  */
 
+#ifndef REVIEW_CONTAINER_H
+#define REVIEW_CONTAINER_H
+
 #include <iostream>
 #include <fstream>
 #include <sstream>
@@ -167,3 +170,4 @@ public:
         std::cout << "Cleaned data saved to: " << filename << std::endl;
     }
 };
+#endif // REVIEW_CONTAINER_H
