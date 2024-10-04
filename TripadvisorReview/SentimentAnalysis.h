@@ -122,12 +122,12 @@ public:
         // Count positive and negative words and store them in lists
         while (iss >> word)
         {
-            if (positiveWords.contains(word))
+            if (linearSearch(positiveWords, word))
             {
                 node->positiveCount++;
                 addToList(node->positiveWordsList, word); // Add positive word to list
             }
-            if (negativeWords.contains(word))
+            if (linearSearch(negativeWords, word))
             {
                 node->negativeCount++;
                 addToList(node->negativeWordsList, word); // Add negative word to list
@@ -136,27 +136,32 @@ public:
 
         // Calculate raw score
         int rawScore = node->positiveCount - node->negativeCount;
-
-        // N is the total number of positive and negative words
         int N = node->positiveCount + node->negativeCount;
 
         if (N > 0)
         {
-            // Calculate the min and max raw scores
             int minRawScore = -N;
             int maxRawScore = +N;
-
-            // Calculate the normalized score
             double normalizedScore = static_cast<double>(rawScore - minRawScore) / (maxRawScore - minRawScore);
-
-            // Calculate the final sentiment score (1–5)
             node->sentimentScore = 1 + (4 * normalizedScore);
         }
         else
         {
-            // If no sentiment words, set a neutral score
             node->sentimentScore = 3;
         }
+    }
+
+    // Linear Search to search words in review
+    bool linearSearch(WordArray &words, const string &word)
+    {
+        for (int i = 0; i < words.getWordCount(); ++i)
+        {
+            if (words.getWordAt(i) == word)
+            {
+                return true; // Word found
+            }
+        }
+        return false; // Word not found
     }
 
     //  Analyze all reviews in the linked list

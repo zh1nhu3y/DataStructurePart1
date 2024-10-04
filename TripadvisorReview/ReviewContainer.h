@@ -181,6 +181,7 @@ std::string advancedCleanReview(const std::string &review)
 // Function to read, clean, and store the CSV data
 void cleanCSV(const std::string &inputFile, CustomArray &reviews)
 {
+    std::cout << "Loading reviews from " << inputFile << std::endl;
     std::ifstream inFile(inputFile);
 
     if (!inFile.is_open())
@@ -223,6 +224,7 @@ void cleanCSV(const std::string &inputFile, CustomArray &reviews)
         // Add the cleaned review and rating to the custom array
         reviews.add(review, rating);
     }
+    std::cout << "Total Reviews Loaded: " << reviews.getSize() << std::endl;
 
     inFile.close();
 }
