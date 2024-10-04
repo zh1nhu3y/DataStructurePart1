@@ -8,8 +8,10 @@
 #include <fstream>
 #include <cmath>
 #include <algorithm>
+#include <chrono>
 
 using namespace std;
+using namespace std::chrono;
 
 // Struct to store words found in a linked list
 struct WordNode
@@ -74,9 +76,10 @@ public:
         }
     }
 
-    //  Add a new review to linked list
-    void addReview(const string &review, int rating)
+    //  Add a new review to linked list at the end
+    void insertAtEnd(const string &review, int rating)
     {
+        auto llInsertAtEndStart = high_resolution_clock::now();
         SentimentNode *newNode = new SentimentNode(review, rating);
 
         if (!head)
@@ -93,8 +96,15 @@ public:
             current->next = newNode;
         }
         size++;
+
+        auto llInsertAtEndStop = high_resolution_clock::now();
+        auto llInsertAtEndDuration = duration_cast<microseconds>(llInsertAtEndStop - llInsertAtEndStart);
+
+        cout << "Time taken To Add A Review to End of Linked List : ";
+        cout << llInsertAtEndDuration.count() << " microseconds. " << endl;
     }
 
+    // Return size of linked list
     int getSize()
     {
         return size;
@@ -227,5 +237,45 @@ public:
             current = current->next;
         }
         outFile << endl;
+    }
+
+    // Bubble sort to sort the reviews by sentiment score in ascending order
+    void bubbleSortSentiment()
+    {
+        if (head->next == nullptr)
+            return;
+
+        bool swapped;
+        do
+        {
+            swapped = false;
+            SentimentNode *current = head;
+            SentimentNode *prev = nullptr;
+            SentimentNode *nextNode = nullptr;
+
+            while (current->next)
+            {
+                nextNode = current->next;
+                if (current->sentimentScore > nextNode->sentimentScore)
+                {
+                    // Swap nodes
+                    if (prev)
+                    {
+                        prev->next = nextNode;
+                    }
+                    else
+                    {
+                        head = nextNode;
+                    }
+                    current->next = nextNode->next;
+                    nextNode->next = current;
+                    swapped = true;
+                }
+                prev = current;
+                current = nextNode;
+            }
+        } while (swapped);
+
+        cout << "Reviews sorted by sentiment score." << endl;
     }
 };

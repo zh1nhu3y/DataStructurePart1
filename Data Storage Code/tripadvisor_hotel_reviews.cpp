@@ -173,18 +173,18 @@ public:
     }
 };
 
-// int main()
-// {
-//     // Initialize the review container
-//     ReviewContainer reviews;
+int main()
+{
+    // Initialize the review container
+    ReviewContainer reviews;
 
-//     // Load reviews from the raw CSV file
-//     reviews.loadFromFile("C:\\Users\\lawme\\OneDrive - Asia Pacific University\\Degree\\Sem 2\\Data Structure\\Assignment\\DSTR_P1_Data\\tripadvisor_hotel_reviews.csv");
+    // Load reviews from the raw CSV file
+    reviews.loadFromFile("C:\\Users\\lawme\\OneDrive - Asia Pacific University\\Degree\\Sem 2\\Data Structure\\Assignment\\DSTR_P1_Data\\tripadvisor_hotel_reviews.csv");
 
-//     // Save the cleaned reviews to a new CSV file
-//     reviews.saveToFile("C:\\Users\\lawme\\OneDrive - Asia Pacific University\\Degree\\Sem 2\\Data Structure\\Assignment\\DSTR_P1_Data\\organized_hotel_reviews.csv");
+    // Save the cleaned reviews to a new CSV file
+    reviews.saveToFile("C:\\Users\\lawme\\OneDrive - Asia Pacific University\\Degree\\Sem 2\\Data Structure\\Assignment\\DSTR_P1_Data\\organized_hotel_reviews.csv");
 
-//     std::cout << "Data cleaning complete. Cleaned data saved to " << CLEANED_FILE << std::endl;
+    std::cout << "Data cleaning complete. Cleaned data saved to " << CLEANED_FILE << std::endl;
 
-//     return 0;
-// }
+    return 0;
+}
