@@ -12,6 +12,7 @@
 #include <cctype>
 #include <climits>
 #include <iomanip>
+#include <chrono>
 #include "LinkedList.h"
 #include "ReviewContainer.h"
 #include "WordArray.h"
@@ -208,87 +209,26 @@ public:
         cout << "Summary Report Generated to: " << outputFilename << endl;
 
         // ... (keep sorting and searching sections)
+
+        string wordToSearch = "great";
+
+        cout << "\n=======SEARCH PERFORMANCE COMPARISON========\n";
+
+        cout << "Word searched: \"" << wordToSearch << "\"\n";
+
+        // Linear Search
+        int linearFreq = allWords.linearSearch(wordToSearch);
+
+        // Two-Pointer Search
+        int twoPointerFreq = allWords.twoPointerSearch(wordToSearch);
+
+        cout << "Linear Search result: Frequency = " << linearFreq << "\n";
+        cout << "Two-Pointer Search result: Frequency = " << twoPointerFreq << "\n";
     }
 
     int getTotalReviews() const { return totalReviews; }
     int getTotalPositiveWords() const { return totalPositiveWords; }
     int getTotalNegativeWords() const { return totalNegativeWords; }
-
-    // Bubble sort
-    void bubbleSort()
-    {
-        if (!this->head)
-            return;
-
-        bool swapped;
-        Node<WordFrequency> *ptr1;
-        Node<WordFrequency> *lptr = nullptr;
-
-        do
-        {
-            swapped = false;
-            ptr1 = this->head;
-
-            while (ptr1->next != lptr)
-            {
-                if (ptr1->data.frequency > ptr1->next->data.frequency)
-                {
-                    // Manually swap the data
-                    WordFrequency temp = ptr1->data;
-                    ptr1->data = ptr1->next->data;
-                    ptr1->next->data = temp;
-
-                    swapped = true;
-                }
-                ptr1 = ptr1->next;
-            }
-            lptr = ptr1;
-        } while (swapped);
-    }
-
-    // Insertion sort
-    void insertionSort()
-    {
-        if (!this->head || !this->head->next)
-            return;
-
-        // Create a new sorted list
-        Node<WordFrequency> *sorted = nullptr;
-
-        // Traverse the original list and insert each node into the sorted list
-        Node<WordFrequency> *current = this->head;
-        while (current != nullptr)
-        {
-            // Store the next node for later use
-            Node<WordFrequency> *next = current->next;
-
-            // Insert current node into the sorted part
-            if (sorted == nullptr || sorted->data.frequency >= current->data.frequency)
-            {
-                // Insert at the beginning of the sorted list
-                current->next = sorted;
-                sorted = current;
-            }
-            else
-            {
-                // Traverse the sorted list to find the insertion point
-                Node<WordFrequency> *temp = sorted;
-                while (temp->next != nullptr && temp->next->data.frequency < current->data.frequency)
-                {
-                    temp = temp->next;
-                }
-                // Insert the node
-                current->next = temp->next;
-                temp->next = current;
-            }
-
-            // Move to the next node in the original list
-            current = next;
-        }
-
-        // Update the head to point to the new sorted list
-        this->head = sorted;
-    }
 
 private:
     // Method to convert cleaned reviews to linked list
@@ -341,12 +281,69 @@ private:
         cout << "Finished analyzing review." << endl;
     }
 
-    void generateHistogram(ofstream &outputFile, int maxBars = 10) const
+    // void generateHistogram(ofstream &outputFile, int maxBars = 20)
+    // {
+    //     outputFile << "\n9. WORD FREQUENCY HISTOGRAM\n";
+
+    //     LinkedList<WordFrequency> frequencies = getWordFrequencies();
+
+    //     // Find maximum frequency for Histogram scalling
+    //     Node<WordFrequency> *current = frequencies.getHead();
+    //     int maxFreq = 0;
+    //     while (current != nullptr)
+    //     {
+    //         if (current->data.frequency > maxFreq)
+    //             maxFreq = current->data.frequency;
+    //         current = current->next;
+    //     }
+
+    //     // Get Histogram for the first maxBars words
+    //     current = frequencies.getHead();
+    //     int shown = 0;
+    //     while (current != nullptr && shown < maxBars)
+    //     {
+    //         int barLength = (current->data.frequency * 50) / maxFreq;
+    //         outputFile << std::setw(15) << std::left << current->data.word << " |";
+    //         for (int i = 0; i < barLength; i++)
+    //             outputFile << "█";
+    //         outputFile << " " << current->data.frequency << "\n";
+    //         current = current->next;
+    //         shown++;
+    //     }
+    // }
+
+    // TestingGgggggggggggggggg
+
+    void generateHistogram(ofstream &outputFile, int maxBars = 20)
     {
         outputFile << "\n9. WORD FREQUENCY HISTOGRAM\n";
 
-        LinkedList<WordFrequency> frequencies = getWordFrequencies();
-        Node<WordFrequency> *current = frequencies.getHead();
+        // Create two copies of the frequency list for comparison
+        // LinkedList<WordFrequency> bubbleSortList = getWordFrequencies();
+        LinkedList<WordFrequency> insertionSortList = getWordFrequencies();
+
+        // Time bubble sort
+        // auto startBubble = std::chrono::high_resolution_clock::now();
+        // bubbleSortList.bubbleSort();
+        // auto endBubble = std::chrono::high_resolution_clock::now();
+        // auto bubbleDuration = std::chrono::duration_cast<std::chrono::microseconds>(endBubble - startBubble);
+
+        // Time insertion sort
+        auto startInsertion = std::chrono::high_resolution_clock::now();
+        insertionSortList.insertionSort();
+        auto endInsertion = std::chrono::high_resolution_clock::now();
+        auto insertionDuration = std::chrono::duration_cast<std::chrono::microseconds>(endInsertion - startInsertion);
+
+        // Output sorting times
+        // cout << "Bubble Sort Time: " << insertionDuration.count() << " microseconds\n";
+        cout << "\nInsertion Sort Time: " << insertionDuration.count() << " ns\n\n";
+
+        // Use any sort list for histogram (you could use either one)
+        Node<WordFrequency> *current = insertionSortList.getHead();
+
+        // Node<WordFrequency> *current = insertionSortList.getHead();
+
+        // Find maximum frequency for scaling
         int maxFreq = 0;
         while (current != nullptr)
         {
@@ -355,7 +352,9 @@ private:
             current = current->next;
         }
 
-        current = frequencies.getHead();
+        // Generate histogram
+        current = insertionSortList.getHead();
+
         int shown = 0;
         while (current != nullptr && shown < maxBars)
         {
