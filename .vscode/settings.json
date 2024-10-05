@@ -40,13 +40,6 @@
     "sstream": "cpp",
     "stdexcept": "cpp",
     "streambuf": "cpp",
-    "typeinfo": "cpp",
-    "chrono": "cpp",
-    "bitset": "cpp",
-    "cstring": "cpp",
-    "ctime": "cpp",
-    "map": "cpp",
-    "ratio": "cpp",
-    "regex": "cpp"
+    "typeinfo": "cpp"
   }
 }

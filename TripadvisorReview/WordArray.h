@@ -2,6 +2,9 @@
  *  WordArray.h
  */
 
+#ifndef WORD_ARRAY_H
+#define WORD_ARRAY_H
+
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -101,3 +104,4 @@ public:
         throw std::out_of_range("Index out of range");
     }
 };
+#endif // WORD_ARRAY_H
