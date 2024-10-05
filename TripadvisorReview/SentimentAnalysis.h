@@ -8,8 +8,10 @@
 #include <fstream>
 #include <cmath>
 #include <algorithm>
+#include <chrono>
 
 using namespace std;
+using namespace std::chrono;
 
 // Struct to store words found in a linked list
 struct WordNode
@@ -74,8 +76,8 @@ public:
         }
     }
 
-    //  Add a new review to linked list
-    void addReview(const string &review, int rating)
+    //  Add a new review to linked list at the end
+    void insertAtEnd(const string &review, int rating)
     {
         SentimentNode *newNode = new SentimentNode(review, rating);
 
@@ -95,6 +97,7 @@ public:
         size++;
     }
 
+    // Return size of linked list
     int getSize()
     {
         return size;
@@ -112,12 +115,12 @@ public:
         // Count positive and negative words and store them in lists
         while (iss >> word)
         {
-            if (positiveWords.contains(word))
+            if (binarySearchSentiment(positiveWords, word))
             {
                 node->positiveCount++;
                 addToList(node->positiveWordsList, word); // Add positive word to list
             }
-            if (negativeWords.contains(word))
+            if (binarySearchSentiment(negativeWords, word))
             {
                 node->negativeCount++;
                 addToList(node->negativeWordsList, word); // Add negative word to list
@@ -126,27 +129,46 @@ public:
 
         // Calculate raw score
         int rawScore = node->positiveCount - node->negativeCount;
-
-        // N is the total number of positive and negative words
         int N = node->positiveCount + node->negativeCount;
 
         if (N > 0)
         {
-            // Calculate the min and max raw scores
             int minRawScore = -N;
             int maxRawScore = +N;
-
-            // Calculate the normalized score
             double normalizedScore = static_cast<double>(rawScore - minRawScore) / (maxRawScore - minRawScore);
-
-            // Calculate the final sentiment score (1–5)
             node->sentimentScore = 1 + (4 * normalizedScore);
         }
         else
         {
-            // If no sentiment words, set a neutral score
             node->sentimentScore = 3;
         }
+    }
+
+    // Binary Search to search words in review
+    bool binarySearchSentiment(const WordArray &words, const std::string &word) const
+    {
+        int low = 0;
+        int high = words.getWordCount() - 1;
+
+        while (low <= high)
+        {
+            int mid = (low + high) / 2;
+            const std::string &midWord = words.getWordAt(mid);
+
+            if (midWord == word)
+            {
+                return true; // Word found
+            }
+            else if (midWord < word)
+            {
+                low = mid + 1; // Search in the right half
+            }
+            else
+            {
+                high = mid - 1; // Search in the left half
+            }
+        }
+        return false; // Word not found
     }
 
     //  Analyze all reviews in the linked list
@@ -227,5 +249,45 @@ public:
             current = current->next;
         }
         outFile << endl;
+    }
+
+    // Bubble sort to sort the reviews by sentiment score in ascending order
+    void bubbleSortSentiment()
+    {
+        if (head->next == nullptr)
+            return;
+
+        bool swapped;
+        do
+        {
+            swapped = false;
+            SentimentNode *current = head;
+            SentimentNode *prev = nullptr;
+            SentimentNode *nextNode = nullptr;
+
+            while (current->next)
+            {
+                nextNode = current->next;
+                if (current->sentimentScore > nextNode->sentimentScore)
+                {
+                    // Swap nodes
+                    if (prev)
+                    {
+                        prev->next = nextNode;
+                    }
+                    else
+                    {
+                        head = nextNode;
+                    }
+                    current->next = nextNode->next;
+                    nextNode->next = current;
+                    swapped = true;
+                }
+                prev = current;
+                current = nextNode;
+            }
+        } while (swapped);
+
+        cout << "Reviews sorted by sentiment score." << endl;
     }
 };

@@ -40,14 +40,6 @@
     "sstream": "cpp",
     "stdexcept": "cpp",
     "streambuf": "cpp",
-    "typeinfo": "cpp",
-    "ctime": "cpp",
-    "iomanip": "cpp"
-  },
-  "editor.defaultFormatter": "esbenp.prettier-vscode",
-  "editor.formatOnSave": true,
-  "files.autoSave": "onFocusChange",
-  "[cpp]": {
-    "editor.defaultFormatter": "ms-vscode.cpptools"
+    "typeinfo": "cpp"
   }
 }

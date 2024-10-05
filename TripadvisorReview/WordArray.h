@@ -94,5 +94,14 @@ public:
     {
         return size; // Add this method to get the count of words loaded
     }
+
+    std::string getWordAt(int index) const
+    {
+        if (index >= 0 && index < size)
+        {
+            return words[index];
+        }
+        throw std::out_of_range("Index out of range");
+    }
 };
 #endif // WORD_ARRAY_H
