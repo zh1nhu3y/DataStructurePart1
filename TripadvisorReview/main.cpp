@@ -16,12 +16,12 @@ int main()
     cout << "\n Pan Zhin Huey, Law Mei Jun, Jason Soo Zi Shen, Lee Cen Yu\n";
     cout << "\n================= DATA STORAGE ================\n\n";
 
+    // Input file path
+    std::string inputFile = "C:/Users/lawme/OneDrive - Asia Pacific University/Degree/Sem 2/Data Structure/Assignment/DSTR_P1_Data/tripadvisor_test.csv";
+    std::string outputFile = "C:/Users/lawme/OneDrive - Asia Pacific University/Degree/Sem 2/Data Structure/Assignment/DSTR_P1_Data/cleaned_tripadvisor_hotel_reviews.csv";
+
     // Initialize custom array with a starting capacity
     CustomArray reviews(25000);
-
-    // Input file path
-    std::string inputFile = "C:/Users/lawme/OneDrive - Asia Pacific University/Degree/Sem 2/Data Structure/Assignment/DSTR_P1_Data/tripadvisor_hotel_reviews.csv";
-    std::string outputFile = "C:/Users/lawme/OneDrive - Asia Pacific University/Degree/Sem 2/Data Structure/Assignment/DSTR_P1_Data/cleaned_tripadvisor_hotel_reviews.csv";
 
     // Clean the CSV file and store the data
     cleanCSV(inputFile, reviews);
@@ -38,8 +38,8 @@ int main()
     // reviews.saveToFile("C:/Users/Zhin Huey/OneDrive - Asia Pacific University/Degree Year2-SEM2/Data Structure/organized_hotel_reviews.csv");
 
     WordArray positiveWords, negativeWords;
-    positiveWords.loadWordsFromFile("C:/Users/Zhin Huey/OneDrive - Asia Pacific University/Degree Year2-SEM2/Data Structure/Assignement 1/positive-words.txt");
-    negativeWords.loadWordsFromFile("C:/Users/Zhin Huey/OneDrive - Asia Pacific University/Degree Year2-SEM2/Data Structure/Assignement 1/negative-words.txt");
+    positiveWords.loadWordsFromFile("C:/Users/lawme/OneDrive - Asia Pacific University/Degree/Sem 2/Data Structure/Assignment/DSTR_P1_Data/positive-words.txt");
+    negativeWords.loadWordsFromFile("C:/Users/lawme/OneDrive - Asia Pacific University/Degree/Sem 2/Data Structure/Assignment/DSTR_P1_Data/negative-words.txt");
 
     cout << "\n================= SENTIMENT ANALYSIS ================\n\n";
 
@@ -56,26 +56,12 @@ int main()
     }
     cout << "Number of reviews loaded: " << sentimentList.getSize() << endl; // print number of reviews loaded
 
-    // Create a SentimentLinkedList to analyze the reviews
-    SentimentLinkedList sentimentList(positiveWords, negativeWords);
-
-    // Add each reviews to the linked list
-    for (int i = 0; i < reviews.getReviewCount(); i++)
-    {
-        Review review = reviews.getReview(i);
-        sentimentList.addReview(review.text, review.rating);
-        cout << "Added review " << i + 1 << " to the list." << endl;
-    }
-    cout << "Number of reviews loaded: " << sentimentList.getSize() << endl; // print number of reviews loaded
-
     // Sentiment Analysis for all reviews
     sentimentList.analyzeSentiment();
 
     sentimentList.bubbleSortSentiment();
 
     // Save sentiment analysis results to a file
-    sentimentList.saveResultsToFile("sentiment_analysis_results.txt");
-    // // Save sentiment analysis results to a file
     sentimentList.saveResultsToFile("sentiment_analysis_results.txt");
 
     cout << "\n================= SUMMARY REPORT ================\n\n";

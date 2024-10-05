@@ -79,7 +79,6 @@ public:
     //  Add a new review to linked list at the end
     void insertAtEnd(const string &review, int rating)
     {
-        auto llInsertAtEndStart = high_resolution_clock::now();
         SentimentNode *newNode = new SentimentNode(review, rating);
 
         if (!head)
@@ -96,12 +95,6 @@ public:
             current->next = newNode;
         }
         size++;
-
-        auto llInsertAtEndStop = high_resolution_clock::now();
-        auto llInsertAtEndDuration = duration_cast<microseconds>(llInsertAtEndStop - llInsertAtEndStart);
-
-        cout << "Time taken To Add A Review to End of Linked List : ";
-        cout << llInsertAtEndDuration.count() << " microseconds. " << endl;
     }
 
     // Return size of linked list
@@ -122,12 +115,12 @@ public:
         // Count positive and negative words and store them in lists
         while (iss >> word)
         {
-            if (linearSearch(positiveWords, word))
+            if (binarySearchSentiment(positiveWords, word))
             {
                 node->positiveCount++;
                 addToList(node->positiveWordsList, word); // Add positive word to list
             }
-            if (linearSearch(negativeWords, word))
+            if (binarySearchSentiment(negativeWords, word))
             {
                 node->negativeCount++;
                 addToList(node->negativeWordsList, word); // Add negative word to list
@@ -151,14 +144,28 @@ public:
         }
     }
 
-    // Linear Search to search words in review
-    bool linearSearch(WordArray &words, const string &word)
+    // Binary Search to search words in review
+    bool binarySearchSentiment(const WordArray &words, const std::string &word) const
     {
-        for (int i = 0; i < words.getWordCount(); ++i)
+        int low = 0;
+        int high = words.getWordCount() - 1;
+
+        while (low <= high)
         {
-            if (words.getWordAt(i) == word)
+            int mid = (low + high) / 2;
+            const std::string &midWord = words.getWordAt(mid);
+
+            if (midWord == word)
             {
                 return true; // Word found
+            }
+            else if (midWord < word)
+            {
+                low = mid + 1; // Search in the right half
+            }
+            else
+            {
+                high = mid - 1; // Search in the left half
             }
         }
         return false; // Word not found
