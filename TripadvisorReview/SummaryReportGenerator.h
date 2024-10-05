@@ -13,8 +13,6 @@
 #include <climits>
 #include <iomanip>
 #include "LinkedList.h"
-#include "ReviewContainer.h"
-#include "WordArray.h"
 
 using namespace std;
 
@@ -52,7 +50,7 @@ public:
     // Destructor
     // ~SummaryReportGenerator();
 
-    void analyzeReviews(const ReviewContainer &reviews)
+    void analyzeReviews(const CustomArray& reviews)
     {
         convertArrayToLinkedList(reviews);
         analyzeReviewsInLinkedList();
@@ -208,6 +206,7 @@ public:
         cout << "Summary Report Generated to: " << outputFilename << endl;
 
         // ... (keep sorting and searching sections)
+        
     }
 
     int getTotalReviews() const { return totalReviews; }
@@ -292,15 +291,15 @@ public:
 
 private:
     // Method to convert cleaned reviews to linked list
-    void convertArrayToLinkedList(const ReviewContainer &reviews)
+    void convertArrayToLinkedList(const CustomArray& reviews)
     {
         // Convert the array-based reviews to our linked list structure
-        for (int i = 0; i < reviews.getReviewCount(); ++i)
+        for (int i = 0; i < reviews.getSize(); ++i)
         {
-            Review review = reviews.getReview(i); // This gets a cleaned review
-            reviewLinkedList.insert(review.text);
+            string reviewText = reviews.getReview(i); // This gets a cleaned review
+            reviewLinkedList.insert(reviewText);
         }
-        cout << "Converted " << reviews.getReviewCount() << " reviews to linked list.\n";
+        cout << "Converted " << reviews.getSize() << " reviews to linked list.\n";
     }
 
     void analyzeReviewsInLinkedList()
@@ -313,32 +312,68 @@ private:
         }
     }
 
+    // void analyzeReview(const string &review)
+    // {
+    //     cout << "Analyzing review: " << endl;
+    //     istringstream iss(review);
+    //     string word;
+    //     while (iss >> word)
+    //     {
+    //         // Normalize word: convert to lowercase
+    //         transform(word.begin(), word.end(), word.begin(), ::tolower);
+
+    //         // Remove any trailing punctuation (for simplicity, just common cases)
+    //         word.erase(remove_if(word.begin(), word.end(), ::ispunct), word.end());
+
+    //         // Check if it's a positive or negative word
+    //         if (positiveWords.contains(word))
+    //         {
+    //             totalPositiveWords++;
+    //             allWords.insert(word);
+    //         }
+    //         if (negativeWords.contains(word))
+    //         {
+    //             totalNegativeWords++;
+    //             allWords.insert(word);
+    //         }
+    //     }
+    //     cout << "Finished analyzing review." << endl;
+    // }
+
+    // Optimized analysis
     void analyzeReview(const string &review)
     {
-        cout << "Analyzing review: " << review << endl;
         istringstream iss(review);
         string word;
+        
+        // Create a temporary cache for this review to avoid re-processing the same word multiple times
+        LinkedList<string> localCache;
+
         while (iss >> word)
         {
-            // Normalize word: convert to lowercase
+            // Normalize word: convert to lowercase and remove punctuation
             transform(word.begin(), word.end(), word.begin(), ::tolower);
-
-            // Remove any trailing punctuation (for simplicity, just common cases)
             word.erase(remove_if(word.begin(), word.end(), ::ispunct), word.end());
 
-            // Check if it's a positive or negative word
-            if (positiveWords.contains(word))
+            // Check if the word is already processed in this review
+            if (!localCache.contains(word))
             {
-                totalPositiveWords++;
-                allWords.insert(word);
-            }
-            if (negativeWords.contains(word))
-            {
-                totalNegativeWords++;
-                allWords.insert(word);
+                // Add the word to local cache
+                localCache.insert(word);
+
+                // Check if it's a positive or negative word
+                if (positiveWords.contains(word))
+                {
+                    totalPositiveWords++;
+                    allWords.insert(word); // Insert into global word list
+                }
+                else if (negativeWords.contains(word))
+                {
+                    totalNegativeWords++;
+                    allWords.insert(word);
+                }
             }
         }
-        cout << "Finished analyzing review." << endl;
     }
 
     void generateHistogram(ofstream &outputFile, int maxBars = 10) const
