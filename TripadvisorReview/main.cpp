@@ -51,13 +51,14 @@ int main()
         }
         cout << "Number of reviews loaded: " << sentimentList.getSize() << endl; // print number of reviews loaded
     }
-    // Sentiment Analysis for all reviews
-    sentimentList.analyzeSentiment();
-
-    sentimentList.bubbleSortSentiment();
-
-    // Save sentiment analysis results to a file
-    sentimentList.saveResultsToFile("sentiment_analysis_results.txt");
+    for (int i = 0; i < reviews.getSize(); i++)
+    {
+        std::string reviewText = reviews.getReview(i);
+        int reviewRating = reviews.getRating(i);
+        sentimentList.insertAtEnd(reviewText, reviewRating);
+        cout << "Added review " << i + 1 << " to the list." << endl;
+    }
+    cout << "Number of reviews loaded: " << sentimentList.getSize() << endl; // print number of reviews loaded
 
     cout << "\n================= SUMMARY REPORT ================\n\n";
 
