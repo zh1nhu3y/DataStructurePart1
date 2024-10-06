@@ -2,9 +2,6 @@
  * SummaryReportGenerator.h
  */
 
-#ifndef SUMMARYREPORTGENERATOR_H
-#define SUMMARYREPORTGENERATOR_H
-
 #include <string>
 #include <fstream>
 #include <sstream>
@@ -16,6 +13,7 @@
 #include "LinkedList.h"
 
 using namespace std;
+using namespace std::chrono;
 
 struct WordFrequency
 {
@@ -36,17 +34,18 @@ private:
     LinkedList<string> reviewLinkedList;
     const WordArray &positiveWords;
     const WordArray &negativeWords;
+    LinkedList<WordFrequency> wordFrequencyList;
     LinkedList<string> allWords;
-    Node<WordFrequency> *head;
     int totalReviews;
     int totalPositiveWords;
     int totalNegativeWords;
+    static const int PROGRESS_INTERVAL = 1000; // For Progress Reporting
 
 public:
     // Constructor
     SummaryReportGenerator(const WordArray &posWords, const WordArray &negWords)
         : positiveWords(posWords), negativeWords(negWords),
-          totalPositiveWords(0), totalNegativeWords(0), head(nullptr) {}
+          totalPositiveWords(0), totalNegativeWords(0) {}
 
     // Destructor
     // ~SummaryReportGenerator();
@@ -72,10 +71,10 @@ public:
         return frequencies;
     }
 
-    void generateEnhancedReport(const std::string &outputFilename)
+    void generateEnhancedReport(const string &outputFilename)
     {
         cout << "Generating enhanced report..." << endl;
-        std::ofstream outputFile(outputFilename);
+        ofstream outputFile(outputFilename);
         if (!outputFile.is_open())
         {
             cerr << "Error: Could not open the file for writing." << endl;
@@ -180,14 +179,6 @@ public:
 
         current = frequencies.getHead();
 
-        // Testing
-        cout << "Total words: " << totalWords << "\n"; // Print total words
-
-        if (current != nullptr)
-        {
-            cout << "Current Frequency: " << current->data.frequency << "\n"; // Print current frequency if current is not nullptr
-        }
-
         while (current != nullptr)
         {
             // Percentage of each word used
@@ -207,12 +198,12 @@ public:
         cout << "Summary Report Generated to: " << outputFilename << endl;
 
         // ... (keep sorting and searching sections)
-
-        string wordToSearch = "great";
+        
+    string wordToSearch = "great";
 
         cout << "\n=======SEARCH PERFORMANCE COMPARISON========\n";
 
-        cout << "Word searched: \"" << wordToSearch << "\"\n";
+        cout << "\nWord searched: \"" << wordToSearch << "\"\n";
 
         // Linear Search
         int linearFreq = allWords.linearSearch(wordToSearch);
@@ -243,85 +234,67 @@ private:
 
     void analyzeReviewsInLinkedList()
     {
-        Node<std::string> *current = reviewLinkedList.getHead();
-        while (current != nullptr)
-        {
+        Node<string> *current = reviewLinkedList.getHead();
+        int reviewsProcessed = 0;
+
+        while (current != nullptr) {
             analyzeReview(current->data);
+            
+            reviewsProcessed++;
+            if (reviewsProcessed % PROGRESS_INTERVAL == 0) {
+                cout << "Processed " << reviewsProcessed << " reviews\n";
+            }
+            
             current = current->next;
         }
+        
+        cout << "\nTotal reviews analyzed: " << reviewsProcessed << endl;
     }
 
-    // void analyzeReview(const string &review)
-    // {
-    //     cout << "Analyzing review: " << endl;
-    //     istringstream iss(review);
-    //     string word;
-    //     while (iss >> word)
-    //     {
-    //         // Normalize word: convert to lowercase
-    //         transform(word.begin(), word.end(), word.begin(), ::tolower);
-
-    //         // Remove any trailing punctuation (for simplicity, just common cases)
-    //         word.erase(remove_if(word.begin(), word.end(), ::ispunct), word.end());
-
-    //         // Check if it's a positive or negative word
-    //         if (positiveWords.contains(word))
-    //         {
-    //             totalPositiveWords++;
-    //             allWords.insert(word);
-    //         }
-    //         if (negativeWords.contains(word))
-    //         {
-    //             totalNegativeWords++;
-    //             allWords.insert(word);
-    //         }
-    //     }
-    //     cout << "Finished analyzing review." << endl;
-    // }
-
-    // Optimized analysis
     void analyzeReview(const string &review)
     {
         istringstream iss(review);
         string word;
-        
-        // Create a temporary cache for this review to avoid re-processing the same word multiple times
-        LinkedList<string> localCache;
 
         while (iss >> word)
         {
-            // Normalize word: convert to lowercase and remove punctuation
+            // Normalize word: convert to lowercase
             transform(word.begin(), word.end(), word.begin(), ::tolower);
+
+            // Remove any trailing punctuation (for simplicity, just common cases)
             word.erase(remove_if(word.begin(), word.end(), ::ispunct), word.end());
 
-            // Check if the word is already processed in this review
-            if (!localCache.contains(word))
-            {
-                // Add the word to local cache
-                localCache.insert(word);
-
-                // Check if it's a positive or negative word
-                if (positiveWords.contains(word))
-                {
-                    totalPositiveWords++;
-                    allWords.insert(word); // Insert into global word list
-                }
-                else if (negativeWords.contains(word))
-                {
-                    totalNegativeWords++;
-                    allWords.insert(word);
-                }
+            // Check if it's a positive or negative word
+            // if (positiveWords.contains(word))
+            // {
+            //     totalPositiveWords++;
+            //     allWords.insert(word);
+            // }
+            // if (negativeWords.contains(word))
+            // {
+            //     totalNegativeWords++;
+            //     allWords.insert(word);
+            // }
+            if (allWords.binarySearch(word, positiveWords)) {
+                totalPositiveWords++;
+                allWords.insert(word);
+            }
+            else if (allWords.binarySearch(word, negativeWords)) {
+                totalNegativeWords++;
+                allWords.insert(word);
             }
         }
+        cout << "Finished analyzing review: " << review << endl;
     }
 
-    // void generateHistogram(ofstream &outputFile, int maxBars = 20)
+    
+
+
+    // void generateHistogram(ofstream &outputFile, int maxBars = 10) const
     // {
     //     outputFile << "\n9. WORD FREQUENCY HISTOGRAM\n";
 
     //     LinkedList<WordFrequency> frequencies = getWordFrequencies();
-
-    //     // Find maximum frequency for Histogram scalling
     //     Node<WordFrequency> *current = frequencies.getHead();
     //     int maxFreq = 0;
     //     while (current != nullptr)
@@ -331,13 +304,12 @@ private:
     //         current = current->next;
     //     }
 
-    //     // Get Histogram for the first maxBars words
     //     current = frequencies.getHead();
     //     int shown = 0;
     //     while (current != nullptr && shown < maxBars)
     //     {
     //         int barLength = (current->data.frequency * 50) / maxFreq;
-    //         outputFile << std::setw(15) << std::left << current->data.word << " |";
+    //         outputFile << setw(15) << left << current->data.word << " |";
     //         for (int i = 0; i < barLength; i++)
     //             outputFile << "█";
     //         outputFile << " " << current->data.frequency << "\n";
@@ -346,31 +318,30 @@ private:
     //     }
     // }
 
-    // TestingGgggggggggggggggg
-
+    // Sorted Histogram
     void generateHistogram(ofstream &outputFile, int maxBars = 20)
     {
         outputFile << "\n9. WORD FREQUENCY HISTOGRAM\n";
 
         // Create two copies of the frequency list for comparison
-        // LinkedList<WordFrequency> bubbleSortList = getWordFrequencies();
+        LinkedList<WordFrequency> bubbleSortList = getWordFrequencies();
         LinkedList<WordFrequency> insertionSortList = getWordFrequencies();
 
         // Time bubble sort
-        // auto startBubble = std::chrono::high_resolution_clock::now();
-        // bubbleSortList.bubbleSort();
-        // auto endBubble = std::chrono::high_resolution_clock::now();
-        // auto bubbleDuration = std::chrono::duration_cast<std::chrono::microseconds>(endBubble - startBubble);
+        auto startBubble = high_resolution_clock::now();
+        bubbleSortList.bubbleSort();
+        auto endBubble = high_resolution_clock::now();
+        auto bubbleDuration = duration_cast<microseconds>(endBubble - startBubble);
 
         // Time insertion sort
-        auto startInsertion = std::chrono::high_resolution_clock::now();
+        auto startInsertion = high_resolution_clock::now();
         insertionSortList.insertionSort();
-        auto endInsertion = std::chrono::high_resolution_clock::now();
-        auto insertionDuration = std::chrono::duration_cast<std::chrono::microseconds>(endInsertion - startInsertion);
+        auto endInsertion = high_resolution_clock::now();
+        auto insertionDuration = duration_cast<microseconds>(endInsertion - startInsertion);
 
         // Output sorting times
-        // cout << "Bubble Sort Time: " << insertionDuration.count() << " microseconds\n";
-        cout << "\nInsertion Sort Time: " << insertionDuration.count() << " ns\n\n";
+        cout << "\nBubble Sort Time: " << insertionDuration.count() << " ms\n";
+        cout << "\nInsertion Sort Time: " << insertionDuration.count() << " ms\n\n";
 
         // Use any sort list for histogram (you could use either one)
         Node<WordFrequency> *current = insertionSortList.getHead();
@@ -387,13 +358,14 @@ private:
         }
 
         // Generate histogram
+        cout << "Histogram sorted with Insertion Sort" << endl;
         current = insertionSortList.getHead();
 
         int shown = 0;
         while (current != nullptr && shown < maxBars)
         {
             int barLength = (current->data.frequency * 50) / maxFreq;
-            outputFile << std::setw(15) << std::left << current->data.word << " |";
+            outputFile << setw(15) << left << current->data.word << " |";
             for (int i = 0; i < barLength; i++)
                 outputFile << "█";
             outputFile << " " << current->data.frequency << "\n";
@@ -401,6 +373,7 @@ private:
             shown++;
         }
     }
+
 
     void generateSentimentDistribution(ofstream &outputFile) const
     {
@@ -416,16 +389,14 @@ private:
         for (int i = 0; i < positiveBar; i++)
             outputFile << "█";
         outputFile << " " << totalPositiveWords << " ("
-                   << std::fixed << std::setprecision(1)
+                   << fixed << setprecision(1)
                    << (static_cast<double>(totalPositiveWords) / total * 100) << "%)\n";
 
         outputFile << "Negative |";
         for (int i = 0; i < negativeBar; i++)
             outputFile << "█";
         outputFile << " " << totalNegativeWords << " ("
-                   << std::fixed << std::setprecision(1)
+                   << fixed << setprecision(1)
                    << (static_cast<double>(totalNegativeWords) / total * 100) << "%)\n";
     }
 };
-
-#endif // SUMMARYREPORTGENERATOR_H

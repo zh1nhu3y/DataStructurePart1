@@ -1,13 +1,13 @@
 /**
  * linkedList.h
  */
-#ifndef LINKEDLIST_H
-#define LINKEDLIST_H
 
 #include <iostream>
 #include <string>
+#include <chrono>
 
 using namespace std;
+using namespace std::chrono;
 
 template <typename T>
 class Node
@@ -63,7 +63,7 @@ public:
         return nullptr;
     }
 
-    bool contains(const T &value) const
+    bool contains(const T &value)
     {
         return find(value) != nullptr;
     }
@@ -161,96 +161,119 @@ public:
     }
 
     // Searching algorithm
-
     // Linear Search
     int linearSearch(const string &word)
     {
-        using Clock = std::chrono::high_resolution_clock;
-        auto start = Clock::now(); // Start timing
-
-        Node<T> *current = head;
-        int frequency = 0;
-
-        while (current != nullptr)
-        {
-            if (current->data == word)
+        const int iterations = 1000; // For more accurate timing
+        int frequency = 0;  // To store the frequency of the word
+        
+        auto start = high_resolution_clock::now();
+        
+        // Run the search multiple times to measure performance
+        for (int i = 0; i < iterations; i++) {
+            frequency = 0;  // Reset frequency for each iteration
+            Node<T> *current = head;
+            
+            // Traverse the linked list
+            while (current != nullptr)
             {
-                frequency = current->frequency;
-                break;
+                if (current->data == word)
+                {
+                    frequency += current->frequency;  // Count frequency of the word
+                }
+                current = current->next;
             }
-            current = current->next;
         }
-
-        auto end = Clock::now(); // End timing
-        auto duration = std::chrono::duration_cast<std::chrono::nanoseconds>(end - start);
-        std::cout << "Linear Search took " << duration.count() << " ns\n";
-
-        return frequency;
+        
+        auto end = high_resolution_clock::now();
+        auto duration = duration_cast<microseconds>(end - start);
+        double avgTime = static_cast<double>(duration.count()) / iterations;
+        
+        // Display timing results
+        cout << "Linear Search took an average of " << avgTime << " microseconds (" 
+            << duration.count() << " microseconds total for " << iterations << " iterations)\n";
+        
+        return frequency;  // Return the frequency of the word found
     }
+
+
 
     // Two-Pointer Search
     int twoPointerSearch(const string &word)
     {
-        using Clock = std::chrono::high_resolution_clock;
-        auto start = Clock::now(); // Start timing
+        const int iterations = 1000; // For more accurate timing
+        int frequency = 0;  // To store the frequency of the word
+        
+        auto start = high_resolution_clock::now();
+        
+        // Run the search multiple times to measure performance
+        for (int i = 0; i < iterations; i++) {
+            frequency = 0;  // Reset frequency for each iteration
 
-        if (head == nullptr)
-        {
-            auto end = Clock::now();
-            auto duration = std::chrono::duration_cast<std::chrono::nanoseconds>(end - start);
-            std::cout << "Two-Pointer Search took " << duration.count() << " ns\n";
-            return 0;
-        }
+            if (head == nullptr) continue;  // Edge case: Empty list
 
-        Node<T> *slow = head;
-        Node<T> *fast = head;
-        int frequency = 0;
-
-        // Perform search with two-pointer technique
-        while (fast != nullptr && fast->next != nullptr)
-        {
-            // Check slow pointer
-            if (slow->data == word)
+            Node<T> *slow = head;
+            Node<T> *fast = head;
+            
+            // Traverse the linked list using two pointers
+            while (fast != nullptr && fast->next != nullptr)
             {
-                frequency = slow->frequency;
-                break;
-            }
+                if (slow->data == word)
+                {
+                    frequency += slow->frequency;  // Count frequency for slow pointer
+                }
+                if (fast->data == word)
+                {
+                    frequency += fast->frequency;  // Count frequency for fast pointer
+                }
+                if (fast->next->data == word)
+                {
+                    frequency += fast->next->frequency;  // Count frequency for fast->next
+                }
 
-            // Check fast pointer
-            if (fast->data == word)
+                slow = slow->next;
+                fast = fast->next->next;
+            }
+            
+            // Edge case: Handle remaining nodes
+            if (fast != nullptr && slow != fast && fast->data == word)
             {
-                frequency = fast->frequency;
-                break;
+                frequency += fast->frequency;
             }
-            if (fast->next->data == word)
+            if (slow != nullptr && slow->data == word)
             {
-                frequency = fast->next->frequency;
-                break;
+                frequency += slow->frequency;
             }
-
-            // Move pointers
-            slow = slow->next;
-            fast = fast->next->next;
         }
+        
+        auto end = high_resolution_clock::now();
+        auto duration = duration_cast<microseconds>(end - start);
+        double avgTime = static_cast<double>(duration.count()) / iterations;
+        
+        // Display timing results
+        cout << "Two-Pointer Search took an average of " << avgTime << " microseconds (" 
+            << duration.count() << " microseconds total for " << iterations << " iterations)\n";
+        
+        return frequency;  // Return the frequency of the word found
+    }
 
-        // Edge case: Check if the list is of odd length
-        if (fast != nullptr && slow != fast && fast->data == word)
-        {
-            frequency = fast->frequency;
+    bool binarySearch(const string& word, const WordArray& wordArray) const {
+        int left = 0;
+        int right = wordArray.getWordCount() - 1;
+        
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+            string midWord = wordArray.getWordAt(mid);
+            
+            if (midWord == word)
+                return true;
+            
+            if (midWord < word)
+                left = mid + 1;
+            else
+                right = mid - 1;
         }
-
-        // Edge case: slow and fast are still the same, check if slow has the word
-        if (frequency == 0 && slow != nullptr && slow->data == word)
-        {
-            frequency = slow->frequency;
-        }
-
-        auto end = Clock::now(); // End timing
-        auto duration = std::chrono::duration_cast<std::chrono::nanoseconds>(end - start);
-        std::cout << "Two-Pointer Search took " << duration.count() << " nanoseconds\n";
-
-        return frequency;
+        
+        return false;
     }
 };
-
-#endif
