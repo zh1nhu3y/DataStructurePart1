@@ -1,5 +1,9 @@
 /**
  * linkedList.h
+ * 
+ * A template-based linked list implementation designed to manage nodes containing words and their
+ * frequencies. Includes basic operations like sorting and searching, along with
+ * word frequency analysis functionalities
  */
 
 #include <iostream>
@@ -9,6 +13,8 @@
 using namespace std;
 using namespace std::chrono;
 
+
+// Node class represents an element in the linked list, containing data, frequency, and a pointer to the next node
 template <typename T>
 class Node
 {
@@ -20,6 +26,7 @@ public:
     Node(T value) : data(value), frequency(1), next(nullptr) {}
 };
 
+// LinkedList class manages a list of nodes, providing operations such as insertion, searching, sorting, and clearing
 template <typename T>
 class LinkedList
 {
@@ -35,6 +42,7 @@ public:
         clear();
     }
 
+    // Inserts a new value or increments the frequency if it already exists
     void insert(const T &value)
     {
         Node<T> *existingNode = find(value);
@@ -51,6 +59,7 @@ public:
         }
     }
 
+    // Finds and returns a node with the specified value, or nullptr if not found
     Node<T> *find(const T &value) const
     {
         Node<T> *current = head;
@@ -63,17 +72,20 @@ public:
         return nullptr;
     }
 
+    // Checks if a value exists in the list
     bool contains(const T &value)
     {
         return find(value) != nullptr;
     }
 
+    // Returns the frequency of the specified word, or 0 if not found
     int getWordFrequency(const T &value) const
     {
         Node<T> *node = find(value);
         return node ? node->frequency : 0;
     }
 
+    // Clears the linked list
     void clear()
     {
         while (head != nullptr)
@@ -85,16 +97,19 @@ public:
         size = 0;
     }
 
+    // Returns the head node
     Node<T> *getHead() const
     {
         return head;
     }
 
+    // Returns the size of the list
     int getSize() const
     {
         return size;
     }
 
+    // Sorts the linked list by frequency using Bubble Sort
     void bubbleSort()
     {
         if (!head || !head->next)
@@ -125,6 +140,7 @@ public:
         } while (swapped);
     }
 
+    // Sorts the linked list by frequency using Insertion Sort
     void insertionSort()
     {
         if (!head || !head->next)
@@ -160,12 +176,11 @@ public:
         head = sorted;
     }
 
-    // Searching algorithm
-    // Linear Search
+    // Performs linear search and calculates the frequency of a word
     int linearSearch(const string &word)
     {
         const int iterations = 1000; // For more accurate timing
-        int frequency = 0;  // To store the frequency of the word
+        int frequency = 0;
         
         auto start = high_resolution_clock::now();
         
@@ -196,13 +211,11 @@ public:
         return frequency;  // Return the frequency of the word found
     }
 
-
-
-    // Two-Pointer Search
+    // Performs two-pointer search to find the frequency of a word
     int twoPointerSearch(const string &word)
     {
         const int iterations = 1000; // For more accurate timing
-        int frequency = 0;  // To store the frequency of the word
+        int frequency = 0;
         
         auto start = high_resolution_clock::now();
         
@@ -257,6 +270,7 @@ public:
         return frequency;  // Return the frequency of the word found
     }
 
+    // Binary search to check if a word exists in a sorted word array
     bool binarySearch(const string& word, const WordArray& wordArray) const {
         int left = 0;
         int right = wordArray.getWordCount() - 1;

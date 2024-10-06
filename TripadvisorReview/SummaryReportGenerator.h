@@ -1,5 +1,8 @@
 /**
  * SummaryReportGenerator.h
+ * 
+ * This class processes reviews, analyzes sentiment using positive and negative
+ * word lists, and generates detailed reports including statistics and visualizations
  */
 
 #include <string>
@@ -39,7 +42,7 @@ private:
     int totalReviews;
     int totalPositiveWords;
     int totalNegativeWords;
-    static const int PROGRESS_INTERVAL = 1000; // For Progress Reporting
+    static const int PROGRESS_INTERVAL = 1000; // For progress reporting in analyzeReviewsInLinkedList function
 
 public:
     // Constructor
@@ -48,7 +51,13 @@ public:
           totalPositiveWords(0), totalNegativeWords(0) {}
 
     // Destructor
-    // ~SummaryReportGenerator();
+    ~SummaryReportGenerator()
+    {
+        // Clears all linked lists
+        reviewLinkedList.clear();
+        wordFrequencyList.clear();
+        allWords.clear();
+    }
 
     void analyzeReviews(const CustomArray& reviews)
     {
@@ -73,7 +82,7 @@ public:
 
     void generateEnhancedReport(const string &outputFilename)
     {
-        cout << "Generating enhanced report..." << endl;
+        cout << "Generating Summary Report..." << endl;
         ofstream outputFile(outputFilename);
         if (!outputFile.is_open())
         {
@@ -83,15 +92,15 @@ public:
         outputFile << "\n====== COMPREHENSIVE SENTIMENT ANALYSIS REPORT ======\n\n";
 
         // 1. Basic Statistics
-        outputFile << "1. BASIC STATISTICS\n";
+        outputFile << "1. BASIC STATISTICS\n\n";
         outputFile << "Total Reviews Analyzed: " << reviewLinkedList.getSize() << "\n";
         outputFile << "Total Positive Words: " << totalPositiveWords << "\n";
         outputFile << "Total Negative Words: " << totalNegativeWords << "\n";
 
         // 2. Overall Sentiment Trend - overall direction of sentiment (positive or negative)
         double sentimentRatio = totalReviews > 0 ? static_cast<double>(totalPositiveWords) / (totalPositiveWords + totalNegativeWords) : 0;
-        outputFile << "\n2. OVERALL SENTIMENT TREND\n";
-        outputFile << "Sentiment Ratio (positive words / total sentiment words): "
+        outputFile << "\n\n2. OVERALL SENTIMENT TREND\n\n";
+        outputFile << "Sentiment Ratio (positive words / positive words + negative words): "
                    << fixed << setprecision(2) << sentimentRatio * 100 << "%\n";
 
         if (sentimentRatio > 0.6)
@@ -131,21 +140,21 @@ public:
             current = current->next;
         }
 
-        outputFile << "\n3. WORD USAGE PATTERNS\n";
+        outputFile << "\n\n3. WORD USAGE PATTERNS\n\n";
         outputFile << "Most impactful word: \"" << maxWord << "\" (used " << maxFreq << " times)\n";
         outputFile << "Least impactful word: \"" << minWord << "\" (used " << minFreq << " times)\n";
 
         // 4. Average Sentiment Words Per Review
         double avgWordsPerReview = totalReviews > 0 ? static_cast<double>(totalWords) / totalReviews : 0;
-        outputFile << "\n4. SENTIMENT INTENSITY\n";
+        outputFile << "\n\n4. SENTIMENT INTENSITY\n\n";
         outputFile << "Average sentiment words per review: "
                    << fixed << setprecision(2) << avgWordsPerReview << "\n";
 
-        if (avgWordsPerReview > 5)
+        if (avgWordsPerReview > 8)
         {
             outputFile << "Trend: Reviews show strong emotional content\n";
         }
-        else if (avgWordsPerReview < 2)
+        else if (avgWordsPerReview < 3)
         {
             outputFile << "Trend: Reviews are generally neutral or factual\n";
         }
@@ -155,7 +164,7 @@ public:
         }
 
         // 5. Word Frequency Distribution
-        outputFile << "\n5. WORD FREQUENCY DISTRIBUTION\n";
+        outputFile << "\n\n5. WORD FREQUENCY DISTRIBUTION\n\n";
         int highFreq = 0, medFreq = 0, lowFreq = 0;
         current = frequencies.getHead();
 
@@ -175,16 +184,26 @@ public:
         outputFile << "Low frequency words (<30% of max): " << lowFreq << "\n";
 
         // 6. Detailed Word List
-        outputFile << "\n6. DETAILED WORD FREQUENCY LIST\n";
+        outputFile << "\n\n6. DETAILED WORD FREQUENCY LIST\n\n";
 
-        current = frequencies.getHead();
+        outputFile << "Frequency of each words used in overall reviews, listed in descending order based on frequency using Insertion Sort\n\n";
+
+
+        LinkedList<WordFrequency> wordFrequencies = getWordFrequencies();
+
+        // Sort the words in descending order based on frequency
+        wordFrequencies.insertionSort();
+
+        current = wordFrequencies.getHead();
 
         while (current != nullptr)
         {
             // Percentage of each word used
             double percentage = totalWords > 0 ? (static_cast<double>(current->data.frequency) / totalWords) * 100.0 : 0.0;
+
             outputFile << current->data.word << ": " << current->data.frequency
-                       << " times (" << fixed << setprecision(3) << percentage << "%)\n";
+                       << " times (" << fixed << setprecision(4) << percentage << "%)\n";
+
             current = current->next;
         }
 
@@ -253,6 +272,13 @@ private:
 
     void analyzeReview(const string &review)
     {
+        // Handling empty review
+        if (review.empty()) 
+        {
+            cerr << "Warning: Empty review encountered" << endl;
+            return;
+        }
+
         istringstream iss(review);
         string word;
 
@@ -264,17 +290,7 @@ private:
             // Remove any trailing punctuation (for simplicity, just common cases)
             word.erase(remove_if(word.begin(), word.end(), ::ispunct), word.end());
 
-            // Check if it's a positive or negative word
-            // if (positiveWords.contains(word))
-            // {
-            //     totalPositiveWords++;
-            //     allWords.insert(word);
-            // }
-            // if (negativeWords.contains(word))
-            // {
-            //     totalNegativeWords++;
-            //     allWords.insert(word);
-            // }
+            // Check if it's a positive or negative word using Binary Search
             if (allWords.binarySearch(word, positiveWords)) {
                 totalPositiveWords++;
                 allWords.insert(word);
@@ -287,41 +303,10 @@ private:
         cout << "Finished analyzing review: " << review << endl;
     }
 
-    
-
-
-    // void generateHistogram(ofstream &outputFile, int maxBars = 10) const
-    // {
-    //     outputFile << "\n9. WORD FREQUENCY HISTOGRAM\n";
-
-    //     LinkedList<WordFrequency> frequencies = getWordFrequencies();
-    //     Node<WordFrequency> *current = frequencies.getHead();
-    //     int maxFreq = 0;
-    //     while (current != nullptr)
-    //     {
-    //         if (current->data.frequency > maxFreq)
-    //             maxFreq = current->data.frequency;
-    //         current = current->next;
-    //     }
-
-    //     current = frequencies.getHead();
-    //     int shown = 0;
-    //     while (current != nullptr && shown < maxBars)
-    //     {
-    //         int barLength = (current->data.frequency * 50) / maxFreq;
-    //         outputFile << setw(15) << left << current->data.word << " |";
-    //         for (int i = 0; i < barLength; i++)
-    //             outputFile << "█";
-    //         outputFile << " " << current->data.frequency << "\n";
-    //         current = current->next;
-    //         shown++;
-    //     }
-    // }
-
     // Sorted Histogram
     void generateHistogram(ofstream &outputFile, int maxBars = 20)
     {
-        outputFile << "\n9. WORD FREQUENCY HISTOGRAM\n";
+        outputFile << "\n\n9. WORD FREQUENCY HISTOGRAM\n";
 
         // Create two copies of the frequency list for comparison
         LinkedList<WordFrequency> bubbleSortList = getWordFrequencies();
@@ -346,8 +331,6 @@ private:
         // Use any sort list for histogram (you could use either one)
         Node<WordFrequency> *current = insertionSortList.getHead();
 
-        // Node<WordFrequency> *current = insertionSortList.getHead();
-
         // Find maximum frequency for scaling
         int maxFreq = 0;
         while (current != nullptr)
@@ -359,6 +342,9 @@ private:
 
         // Generate histogram
         cout << "Histogram sorted with Insertion Sort" << endl;
+
+        outputFile << "\nHistogram of Top 20 words used in overall reviews, presented in descending order based on frequency using Insertion Sort\n\n";
+
         current = insertionSortList.getHead();
 
         int shown = 0;
@@ -374,10 +360,9 @@ private:
         }
     }
 
-
     void generateSentimentDistribution(ofstream &outputFile) const
     {
-        outputFile << "\n10. SENTIMENT DISTRIBUTION GRAPH\n";
+        outputFile << "\n\n10. SENTIMENT DISTRIBUTION GRAPH\n\n";
         int total = totalPositiveWords + totalNegativeWords;
         if (total == 0)
             return;
