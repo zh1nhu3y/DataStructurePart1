@@ -1,5 +1,6 @@
 /**
  *  SentimentAnalysis.cpp
+ *  -> This class
  */
 
 #include <iostream>
@@ -145,7 +146,7 @@ public:
     }
 
     // Binary Search to search words in review
-    bool binarySearchSentiment(const WordArray &words, const std::string &word) const
+    bool binarySearchSentiment(const WordArray &words, const string &word) const
     {
         int low = 0;
         int high = words.getWordCount() - 1;
@@ -153,7 +154,7 @@ public:
         while (low <= high)
         {
             int mid = (low + high) / 2;
-            const std::string &midWord = words.getWordAt(mid);
+            const string &midWord = words.getWordAt(mid);
 
             if (midWord == word)
             {
@@ -179,8 +180,9 @@ public:
         while (current)
         {
             analyzeReview(current);
-            cout << "Analyzed sentiment for review " << ++count << endl;
+            // cout << "Analyzed sentiment for review " << ++count << endl;
             current = current->next;
+            ++count;
         }
         cout << "Total Review Analyzed: " << count << endl;
     }
