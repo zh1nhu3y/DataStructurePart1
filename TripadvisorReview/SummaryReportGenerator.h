@@ -242,7 +242,7 @@ private:
     // Method to convert cleaned reviews to linked list
     void convertArrayToLinkedList(const CustomArray& reviews)
     {
-        // Convert the array-based reviews to our linked list structure
+        // Convert the array-based reviews to linked list structure
         for (int i = 0; i < reviews.getSize(); ++i)
         {
             string reviewText = reviews.getReview(i); // This gets a cleaned review
