@@ -169,8 +169,8 @@ std::string advancedCleanReview(const std::string &review)
     // Keep apostrophes intact for contractions
     result = std::regex_replace(result, std::regex("[^a-zA-Z0-9\\s,.!?'-]"), " ");
 
-    // Step 4: Remove extra commas or misplaced punctuation
-    result = std::regex_replace(result, std::regex(",\\s*,"), ",");
+    // Step 4: Remove all punctuation
+    result = std::regex_replace(result, std::regex("[.,!?;:\"(){}\\[\\]<>/\\\\]"), "");
 
     // Step 5: Trim leading and trailing spaces
     result = trim(result);

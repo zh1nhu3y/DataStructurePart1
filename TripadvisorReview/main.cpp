@@ -14,7 +14,7 @@ int main()
 {
     cout << "\n DATA STRUCTURE PART 1 - GROUP M";
     cout << "\n Pan Zhin Huey, Law Mei Jun, Jason Soo Zi Shen, Lee Cen Yu\n";
-    cout << "\n================= DATA STORAGE ================\n\n";
+    cout << "\n================= DATA STORAGE ================\n";
 
     // Input file path
     std::string inputFile = "C:/Users/lawme/OneDrive - Asia Pacific University/Degree/Sem 2/Data Structure/Assignment/DSTR_P1_Data/tripadvisor_hotel_reviews.csv";
@@ -44,7 +44,7 @@ int main()
     // positiveWords.loadWordsFromFile("C:/Users/Zhin Huey/OneDrive - Asia Pacific University/Degree Year2-SEM2/Data Structure/Assignement 1/positive-words.txt");
     // negativeWords.loadWordsFromFile("C:/Users/Zhin Huey/OneDrive - Asia Pacific University/Degree Year2-SEM2/Data Structure/Assignement 1/negative-words.txt");
 
-    cout << "\n================= SENTIMENT ANALYSIS ================\n\n";
+    cout << "\n================= SENTIMENT ANALYSIS ================\n";
 
     // Create a SentimentLinkedList to analyze the reviews
     SentimentLinkedList sentimentList(positiveWords, negativeWords);
@@ -66,7 +66,7 @@ int main()
     // Save sentiment analysis results to a file
     sentimentList.saveResultsToFile("sentiment_analysis_results.txt");
 
-    cout << "\n================= SUMMARY REPORT ================\n\n";
+    cout << "\n================= SUMMARY REPORT ================\n";
 
     // // Create report generator using existing word arrays
     // SummaryReportGenerator reportGenerator(positiveWords, negativeWords);

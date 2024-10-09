@@ -10,6 +10,7 @@
 #include <cmath>
 #include <algorithm>
 #include <chrono>
+#include <iomanip>
 
 using namespace std;
 using namespace std::chrono;
@@ -143,9 +144,6 @@ public:
         {
             node->sentimentScore = 3;
         }
-
-        // Round to 2 decimal points
-        node->sentimentScore = std::round(node->sentimentScore * 100) / 100.0;
     }
 
     // Binary Search to search words in review
@@ -230,7 +228,7 @@ public:
             outFile << "Negative Words Count: " << current->negativeCount << endl;
             outFile << "Negative Words Found: ";
             writeWordsToFile(outFile, current->negativeWordsList);
-            outFile << "Sentiment Score: " << current->sentimentScore << endl;
+            outFile << "Sentiment Score: " << std::fixed << std::setprecision(2) << current->sentimentScore << endl;
             outFile << "Given Rating: " << current->rating << endl;
             outFile << "----------------------------------------" << endl;
             current = current->next;
