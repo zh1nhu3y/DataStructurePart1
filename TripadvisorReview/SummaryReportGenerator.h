@@ -216,12 +216,11 @@ public:
         outputFile.close();
         cout << "Summary Report Generated to: " << outputFilename << endl;
 
-        // ... (keep sorting and searching sections)
-        
-    string wordToSearch = "great";
-
+        // Searching for specific word
         cout << "\n=======SEARCH PERFORMANCE COMPARISON========\n";
-
+        
+        string wordToSearch = "great";
+        
         cout << "\nWord searched: \"" << wordToSearch << "\"\n";
 
         // Linear Search
@@ -230,7 +229,7 @@ public:
         // Two-Pointer Search
         int twoPointerFreq = allWords.twoPointerSearch(wordToSearch);
 
-        cout << "Linear Search result: Frequency = " << linearFreq << "\n";
+        cout << "\nLinear Search result: Frequency = " << linearFreq << "\n";
         cout << "Two-Pointer Search result: Frequency = " << twoPointerFreq << "\n";
     }
 

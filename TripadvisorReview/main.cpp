@@ -72,7 +72,7 @@ int main()
     // SummaryReportGenerator reportGenerator(positiveWords, negativeWords);
 
     // // Convert array to linked list and analyze reviews
-    // reportGenerator.analyzeReviews(reviews); // uses the already cleaned reviews
+    // reportGenerator.analyzeReviews(reviews); // Uses the already cleaned reviews
 
     // // Generate comprehensive report
     // reportGenerator.generateEnhancedReport("C:/Users/Zhin Huey/OneDrive - Asia Pacific University/Degree Year2-SEM2/Data Structure/Assignement 1/summary_report.txt");

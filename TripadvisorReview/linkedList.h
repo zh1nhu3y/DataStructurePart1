@@ -205,7 +205,7 @@ public:
         double avgTime = static_cast<double>(duration.count()) / iterations;
         
         // Display timing results
-        cout << "Linear Search took an average of " << avgTime << " microseconds (" 
+        cout << "\nLinear Search took an average of " << avgTime << " microseconds (" 
             << duration.count() << " microseconds total for " << iterations << " iterations)\n";
         
         return frequency;  // Return the frequency of the word found
