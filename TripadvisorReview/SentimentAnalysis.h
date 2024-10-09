@@ -1,6 +1,6 @@
 /**
  *  SentimentAnalysis.cpp
- *  -> This class
+ *  -> This file is to analyze a linked list of sentiment data from user reviews.
  */
 
 #include <iostream>
@@ -143,6 +143,9 @@ public:
         {
             node->sentimentScore = 3;
         }
+
+        // Round to 2 decimal points
+        node->sentimentScore = std::round(node->sentimentScore * 100) / 100.0;
     }
 
     // Binary Search to search words in review
