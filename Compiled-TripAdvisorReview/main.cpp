@@ -6,7 +6,8 @@
 #include <chrono>
 #include "ReviewContainer.h"
 #include "WordArray.h"
-// #include "SentimentAnalysis.h"
+#include "linkedlist.h"
+#include "SentimentAnalysis.h"
 #include "SummaryReportGenerator.h"
 #include "ArrayOperation.h"
 #include "sentimentComparison.h"
@@ -148,8 +149,9 @@ void displayReviewMenu(CustomArray& reviews, ArrayOperation& operations,Sentimen
                 auto astart = high_resolution_clock::now();
                 operations.quickSort(reviews, 0, reviews.getSize() - 1);
                 auto astop = high_resolution_clock::now();
-                duration<double> aduration = duration_cast<milliseconds>(astop - astart);
-                cout << "Array Quick Sort Time: " << aduration.count() << " seconds" << endl;
+                // duration<double> aduration = duration_cast<milliseconds>(astop - astart);
+                duration<double, milli> aduration = astop - astart;
+                cout << "Array Quick Sort Time: " << aduration.count() << " milliseconds" << endl;
 
                 SentimentNode* head = sentimentList.getHead();
                 SentimentNode* low = head;
@@ -168,7 +170,8 @@ void displayReviewMenu(CustomArray& reviews, ArrayOperation& operations,Sentimen
                     auto bstart = high_resolution_clock::now();
                     sentimentList.quickSort(head, low, high);
                     auto bstop = high_resolution_clock::now();
-                    duration<double> bduration = duration_cast<milliseconds>(bstop - bstart);
+                    // duration<double> bduration = duration_cast<milliseconds>(bstop - bstart);
+                    duration<double, milli> bduration = bstop - bstart;
                     cout << "Linked List Quick Sort Time: " << bduration.count() << " seconds" << endl;
                     cout << "Done Sorting" << endl;
                 } else {
@@ -194,8 +197,9 @@ void displayReviewMenu(CustomArray& reviews, ArrayOperation& operations,Sentimen
                     auto dstart = high_resolution_clock::now();
                     sentimentList.bubbleSortLinkedList();  
                     auto dstop = high_resolution_clock::now();
-                    duration<double> dduration = duration_cast<microseconds>(dstop - dstart);
-                    cout << "Linked List Bubble Sort Time: " << dduration.count() << " microseconds" << endl;
+                    // duration<double> dduration = duration_cast<microseconds>(dstop - dstart);
+                    duration<double, milli> dduration = dstop - dstart;
+                    cout << "Linked List Bubble Sort Time: " << dduration.count() << " milliseconds" << endl;
                     cout << "Done Sorting with Bubble Sort." << endl;
                     
                 
@@ -218,37 +222,41 @@ void displayReviewMenu(CustomArray& reviews, ArrayOperation& operations,Sentimen
                 int* indicesBinaryArray = operations.binarySearchAll(reviews, searchRating, resultCountArrayBinary);
                 operations.displaySearchedReviews(reviews, indicesBinaryArray, resultCountArrayBinary);
                 auto arrstop = high_resolution_clock::now();
-                duration<double> arrduration = duration_cast<microseconds>(arrstop - arrstart);
+                // duration<double> arrduration = duration_cast<microseconds>(arrstop - arrstart);
+                duration<double, milli> arrduration = arrstop - arrstart;
 
                 // Binary Search on Linked List (inefficient but for comparison purposes)
                 auto llstart = high_resolution_clock::now(); 
                 int* indicesBinaryLL = sentimentList.binarySearchAllLinkedList(sentimentList, searchRating, resultCountLLBinary);
                 sentimentList.displaySearchedReviews(searchRating);
                 auto llstop = high_resolution_clock::now();
-                duration<double> llduration = duration_cast<microseconds>(llstop - llstart);
+                // duration<double> llduration = duration_cast<microseconds>(llstop - llstart);
+                duration<double, milli> llduration = llstop - llstart;
                 
                 // Linear Search on Array
                 auto arrlnstart = high_resolution_clock::now(); 
                 int* indicesLinearArray = operations.linearSearchAll(reviews, searchRating, resultCountArrayLinear);
                 operations.displaySearchedReviews(reviews, indicesBinaryLL, resultCountArrayLinear);
                 auto arrlnstop = high_resolution_clock::now();
-                duration<double> arrlnduration = duration_cast<microseconds>(arrlnstop - arrlnstart);
+                // duration<double> arrlnduration = duration_cast<microseconds>(arrlnstop - arrlnstart);
+                duration<double, milli> arrlnduration = arrlnstop - arrlnstart;
 
                 // Linear Search on Linked List
                 auto lllnstart = high_resolution_clock::now(); 
                 int* indicesLinearLL = sentimentList.linearSearchAll(sentimentList.getHead(), searchRating, resultCountLLLinear);
                 sentimentList.displaySearchedReviews(searchRating);
                 auto lllnstop = high_resolution_clock::now();
-                duration<double> lllnduration = duration_cast<microseconds>(lllnstop - lllnstart);
+                // duration<double> lllnduration = duration_cast<microseconds>(lllnstop - lllnstart);
+                duration<double, milli> lllnduration = lllnstop - lllnstart;
 
                 // Display results for each search method
                 operations.displaySearchedReviews(reviews, indicesBinaryArray, resultCountArrayBinary);
                 
                 cout << "Done searching!" << endl;
-                cout << "Array Binary Search Time: " << arrduration.count() << " microseconds" << endl;
-                cout << "Linked List Binary Search Time: " << llduration.count() << " microseconds" << endl;
-                cout << "Array Linear Search Time: " << arrlnduration.count() << " microseconds" << endl;
-                cout << "Linked List Linear Search Time: " << lllnduration.count() << " microseconds" << endl;
+                cout << "Array Binary Search Time: " << arrduration.count() << " milliseconds" << endl;
+                cout << "Linked List Binary Search Time: " << llduration.count() << " milliseconds" << endl;
+                cout << "Array Linear Search Time: " << arrlnduration.count() << " milliseconds" << endl;
+                cout << "Linked List Linear Search Time: " << lllnduration.count() << " milliseconds" << endl;
 
                 // Cleanup dynamically allocated memory
                 delete[] indicesBinaryArray;
@@ -279,16 +287,16 @@ int main()
     ArrayOperation operations;
 
     // Jason Input file path
-    std::string inputFile = "C:\\Users\\jason\\OneDrive - Asia Pacific University\\DEGREE APD2F2402\\YEAR 2 SEM 2\\DSTR\\Assignment\\tripadvisor_hotel_reviews.csv";
-    std::string outputFile = "C:\\Users\\jason\\OneDrive - Asia Pacific University\\DEGREE APD2F2402\\YEAR 2 SEM 2\\DSTR\\Assignment\\cleaned_tripadvisor_hotel_reviews.csv";
+    // std::string inputFile = "C:\\Users\\jason\\OneDrive - Asia Pacific University\\DEGREE APD2F2402\\YEAR 2 SEM 2\\DSTR\\Assignment\\tripadvisor_hotel_reviews.csv";
+    // std::string outputFile = "C:\\Users\\jason\\OneDrive - Asia Pacific University\\DEGREE APD2F2402\\YEAR 2 SEM 2\\DSTR\\Assignment\\cleaned_tripadvisor_hotel_reviews.csv";
 
     // MJ Input file path
     // std::string inputFile = "C:/Users/lawme/OneDrive - Asia Pacific University/Degree/Sem 2/Data Structure/Assignment/DSTR_P1_Data/tripadvisor_hotel_reviews.csv";
     // std::string outputFile = "C:/Users/lawme/OneDrive - Asia Pacific University/Degree/Sem 2/Data Structure/Assignment/DSTR_P1_Data/cleaned_tripadvisor_hotel_reviews.csv";
 
     // Huey File path
-    // std::string inputFile = "C:/Users/Zhin Huey/OneDrive - Asia Pacific University/Degree Year2-SEM2/Data Structure/Assignement 1/tripadvisor_hotel_reviews.csv";
-    // std::string outputFile = "C:/Users/Zhin Huey/OneDrive - Asia Pacific University/Degree Year2-SEM2/Data Structure/Assignement 1/organized_hotel_reviews.csv";
+    std::string inputFile = "C:/Users/Zhin Huey/OneDrive - Asia Pacific University/Degree Year2-SEM2/Data Structure/Assignement 1/tripadvisor_hotel_reviews.csv";
+    std::string outputFile = "C:/Users/Zhin Huey/OneDrive - Asia Pacific University/Degree Year2-SEM2/Data Structure/Assignement 1/organized_hotel_reviews.csv";
 
     
     // Initialize custom array with a starting capacity
@@ -296,8 +304,8 @@ int main()
 
     // store positive words, negative words into array
     WordArray positiveWords, negativeWords;
-    positiveWords.loadWordsFromFile("C:\\Users\\jason\\OneDrive - Asia Pacific University\\DEGREE APD2F2402\\YEAR 2 SEM 2\\DSTR\\Assignment\\positive-words.txt");
-    negativeWords.loadWordsFromFile("C:\\Users\\jason\\OneDrive - Asia Pacific University\\DEGREE APD2F2402\\YEAR 2 SEM 2\\DSTR\\Assignment\\negative-words.txt");
+    positiveWords.loadWordsFromFile("C:/Users/Zhin Huey/OneDrive - Asia Pacific University/Degree Year2-SEM2/Data Structure/Assignement 1/positive-words.txt");
+    negativeWords.loadWordsFromFile("C:/Users/Zhin Huey/OneDrive - Asia Pacific University/Degree Year2-SEM2/Data Structure/Assignement 1/negative-words.txt");
 
     // Create a SentimentLinkedList to analyze the reviews
     SentimentLinkedList sentimentList(positiveWords, negativeWords);
@@ -310,14 +318,24 @@ int main()
         cin >> choice;
 
         switch (choice) {
-            case 1:
+           case 1: {
+                auto cleanstart = high_resolution_clock::now();
                 // Clean the CSV file and store the data
                 cleanCSV(inputFile, reviews);
-                cout << "Saving into file ..."<<endl;
+                auto cleanend = high_resolution_clock::now();
+                duration<double, milli> cleanduration = cleanend - cleanstart;
+                cout << "Loading and Cleaning Data Completed!" << endl;
+                cout << "Time taken: " << cleanduration.count() << " milliseconds" << endl;
+
+                // cout << "Time taken: " << cleanduration.count() << " milliseconds" << endl;
+                operations.insertionSortArray(reviews);
+
                 // Output cleaned reviews and ratings to a new CSV file
+                cout << "Saving into File..." << endl;
                 reviews.writeToFile(outputFile);
-                cout << "File saved!"<<endl;
+                cout << "File saved!" << endl;
                 break;
+           }
             case 2:
                 displayPositiveWordsMenu(positiveWords, operations, sentimentList);
                 break;
@@ -333,15 +351,25 @@ int main()
                     cout << "========================= Sentiment Analysis ==========================\n\n" << endl;
 
                     cout << "Start Sentiment Analyzing..." << endl;
+
+                    for (int i = 0; i < reviews.getSize(); i++)
+                    {
+                        std::string reviewText = reviews.getReview(i);
+                        int reviewRating = reviews.getRating(i);
+                        sentimentList.insertAtEnd(reviewText, reviewRating);
+                    }
                     auto asstart = high_resolution_clock::now();
+                    cout << "Number of reviews loaded to list: " << sentimentList.getSize() << endl; // print number of reviews loaded
+                    
                     // Sentiment Analysis for all reviews
                     sentimentList.analyzeSentiment();  // <-- Calls the analyzeSentiment function
                     auto asend = high_resolution_clock::now();
 
-                    sentimentList.displaySentimentAnalysisResults();
-                    duration<double> aduration = duration_cast<microseconds>(asend - asstart) ;
+                    // sentimentList.displaySentimentAnalysisResults();
+                    // duration<double> aduration = duration_cast<microseconds>(asend - asstart) ;
+                    duration<double, milli> aduration = asend - asstart;
                     cout << "Sentiment Analysis Completed!" << endl;
-                    cout << "Time taken: " << aduration.count() << " microseconds" << endl;
+                    cout << "Time taken: " << aduration.count() << " milliseconds" << endl;
 
                     // Save sentiment analysis results to a file
                     cout << "Saving into File..." << endl;
@@ -364,7 +392,8 @@ int main()
                 auto estart = std::chrono::high_resolution_clock::now();
                 sentimentComparison.compareSentimentAndRating(sentimentList);
                 auto eend = std::chrono::high_resolution_clock::now();
-                duration<double> eduration = duration_cast<milliseconds>(eend - estart) ;
+                // duration<double> eduration = duration_cast<milliseconds>(eend - estart) ;
+                duration<double, milli> eduration = eend - estart;
                 cout << "Comparison Done!" << endl;
                 cout << "Comparison Time: " << eduration.count() << " milliseconds" << endl;
 
@@ -387,9 +416,10 @@ int main()
                 auto fstart = std::chrono::high_resolution_clock::now();
                 reportGenerator.analyzeReviews(reviews); // uses the already cleaned reviews
                 auto fend = std::chrono::high_resolution_clock::now();
-                duration<double> fduration = duration_cast<milliseconds>(fend - fstart) / 1000;
+                // duration<double> fduration = duration_cast<milliseconds>(fend - fstart) / 1000;
+                duration<double, milli> fduration = fend - fstart;
                 cout << "Review Analyzing Done!" << endl;
-                cout << "Analyze Review Time: " << fduration.count() << " seconds" << endl;
+                cout << "Analyze Review Time: " << fduration.count() << " milliseconds" << endl;
 
 
                 // Generate comprehensive report
@@ -397,9 +427,10 @@ int main()
                 auto gstart = std::chrono::high_resolution_clock::now();
                 reportGenerator.generateEnhancedReport("summary_report.txt"); // change to your own path
                 auto gend = std::chrono::high_resolution_clock::now();
-                std::chrono::duration<double> grduration = duration_cast<microseconds>(gend - gstart) ;
+                // std::chrono::duration<double> grduration = duration_cast<microseconds>(gend - gstart) ;
+                duration<double, milli> grduration = gend - gstart;
                 cout << "Report Generated!" << endl;
-                cout << "Generating Report Time: " << grduration.count() << " microseconds" << endl;
+                cout << "Generating Report Time: " << grduration.count() << " milliseconds" << endl;
                 break;
             }
             case 0:{

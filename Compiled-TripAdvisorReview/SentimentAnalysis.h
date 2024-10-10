@@ -345,9 +345,6 @@ public:
         }
     }
 
-
-
-
     // Partition function for quick sort
     SentimentNode* partition(SentimentNode* low, SentimentNode* high) {
         int pivotRating = high->rating;  // Use the rating of the high node as pivot
@@ -371,8 +368,6 @@ public:
 
         return i;  // i is now the pivot
     }
-
-
 
     // Helper function to swap two nodes in the linked list
     void swap(SentimentNode* a, SentimentNode* b) {

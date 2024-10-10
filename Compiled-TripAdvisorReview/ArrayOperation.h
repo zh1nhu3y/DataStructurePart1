@@ -51,7 +51,8 @@ public:
 
         // Stop measuring time
         auto stop = std::chrono::high_resolution_clock::now();
-        duration<double> duration = std::chrono::duration_cast<std::chrono::milliseconds>(stop - start);
+        // duration<double> duration = std::chrono::duration_cast<std::chrono::milliseconds>(stop - start);
+        duration<double, milli> duration = stop - start;
         std::cout << "End Sorting..." << std::endl;
         std::cout << "\nTime taken for insertion sorting: " << duration.count() << " milliseconds" << std::endl;
     }
@@ -91,7 +92,8 @@ public:
 
     // Stop measuring time
     auto stop = high_resolution_clock::now();
-    duration<double> duration = duration_cast<milliseconds>(stop - start);
+    // duration<double> duration = duration_cast<milliseconds>(stop - start);
+    duration<double, milli> duration = stop - start;
     
     cout << "\nTime taken for bubble sorting: " << duration.count() << " milliseconds" << endl;
 }
@@ -289,8 +291,9 @@ public:
             if (midWord == targetWord)
             {
                 auto stop = high_resolution_clock::now();
-                auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(stop - start) / 1000;
-                cout << "Array Binary Search Time: " << duration.count() << " seconds" << endl;
+                // auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(stop - start) / 1000;
+                duration<double, milli> duration = stop - start;
+                cout << "Array Binary Search Time: " << duration.count() << " milliseconds" << endl;
                 return mid;  // Word found
             }
             if (midWord < targetWord)
@@ -299,7 +302,8 @@ public:
                 high = mid - 1;
         }
         auto stop = high_resolution_clock::now();
-        auto duration = duration_cast<milliseconds>(stop - start) / 1000;
+        // auto duration = duration_cast<milliseconds>(stop - start) / 1000;
+        duration<double, milli> duration = stop - start;
         cout << "Array Binary Search Time: " << duration.count() << " seconds" << endl;
         return -1;  // Word not found
     }

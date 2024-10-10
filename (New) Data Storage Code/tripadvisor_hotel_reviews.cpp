@@ -5,6 +5,7 @@
 #include <regex>
 #include <algorithm> // For std::transform
 #include <cctype>    // For std::tolower
+#include <chrono>
 
 // Define a struct to hold review and rating together
 struct ReviewRating {
@@ -202,6 +203,9 @@ int main() {
     std::string inputFile = "/Users/elvin/Documents/APU/Data Structures/Assignment/Assignment Questions/tripadvisor_hotel_reviews.csv";
     std::string outputFile = "/Users/elvin/Documents/APU/Data Structures/Assignment/Data Storage Code/cleaned_tripadvisor_hotel_reviews.csv";
 
+    // Start measuring time
+    auto start = std::chrono::high_resolution_clock::now();
+
     // Clean the CSV file and store the data
     cleanCSV(inputFile, reviews);
     
@@ -210,6 +214,15 @@ int main() {
 
     // Output cleaned reviews and ratings to a new CSV file
     reviews.writeToFile(outputFile);
+
+    // Stop measuring time
+    auto end = std::chrono::high_resolution_clock::now();
+
+    // Calculate the duration
+    std::chrono::duration<double> elapsed = end - start;
+
+    // Output the time taken in seconds
+    std::cout << "Time Taken: " << elapsed.count() << " seconds" << std::endl;
 
     return 0;
 }
