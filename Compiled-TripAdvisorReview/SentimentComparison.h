@@ -14,7 +14,7 @@ public:
     // Function to compare sentiment score with the rating and display results
     void compareSentimentAndRating(SentimentLinkedList &sentimentList)
     {
-        SentimentNode* current = sentimentList.getHead(); // Get the head node
+        SentimentNode *current = sentimentList.getHead(); // Get the head node
 
         while (current)
         {

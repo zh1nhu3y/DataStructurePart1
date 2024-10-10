@@ -1,6 +1,6 @@
 /**
  * linkedList.h
- * 
+ *
  * A template-based linked list implementation designed to manage nodes containing words and their
  * frequencies. Includes basic operations like sorting and searching, along with
  * word frequency analysis functionalities
@@ -12,7 +12,6 @@
 
 using namespace std;
 using namespace std::chrono;
-
 
 // Node class represents an element in the linked list, containing data, frequency, and a pointer to the next node
 template <typename T>
@@ -177,23 +176,25 @@ public:
     }
 
     // Binary search to check if a word exists in a sorted word array
-    bool binarySearch(const string& word, const WordArray& wordArray) const {
+    bool binarySearch(const string &word, const WordArray &wordArray) const
+    {
         int left = 0;
         int right = wordArray.getWordCount() - 1;
-        
-        while (left <= right) {
+
+        while (left <= right)
+        {
             int mid = left + (right - left) / 2;
             string midWord = wordArray.getWordAt(mid);
-            
+
             if (midWord == word)
                 return true;
-            
+
             if (midWord < word)
                 left = mid + 1;
             else
                 right = mid - 1;
         }
-        
+
         return false;
     }
 };

@@ -67,7 +67,7 @@ public:
         }
     }
 
-    SentimentNode* getNodeAt(int index) const; 
+    SentimentNode *getNodeAt(int index) const;
 
     // Function to delete word linked list (for destructor)
     void deleteList(WordNode *node)
@@ -106,7 +106,6 @@ public:
     {
         return size;
     }
-
 
     //  Sentiment Analysis for one review
     void analyzeReview(SentimentNode *node)
@@ -305,21 +304,28 @@ public:
     }
 
     // Insertion Sort function for the linked list
-    void insertionSort() {
-        if (!head || !head->next) return; // If list is empty or has only one element
+    void insertionSort()
+    {
+        if (!head || !head->next)
+            return; // If list is empty or has only one element
 
-        SentimentNode* sorted = nullptr; // This will hold the sorted portion of the list
+        SentimentNode *sorted = nullptr; // This will hold the sorted portion of the list
 
-        SentimentNode* current = head;
-        while (current) {
-            SentimentNode* next = current->next; // Store next node
+        SentimentNode *current = head;
+        while (current)
+        {
+            SentimentNode *next = current->next; // Store next node
             // Insert current node in sorted linked list
-            if (!sorted || sorted->rating >= current->rating) {
+            if (!sorted || sorted->rating >= current->rating)
+            {
                 current->next = sorted;
                 sorted = current;
-            } else {
-                SentimentNode* temp = sorted;
-                while (temp->next && temp->next->rating < current->rating) {
+            }
+            else
+            {
+                SentimentNode *temp = sorted;
+                while (temp->next && temp->next->rating < current->rating)
+                {
                     temp = temp->next;
                 }
                 current->next = temp->next;
@@ -332,13 +338,15 @@ public:
     }
 
     // Quick sort function for linked list based on rating
-    void quickSort(SentimentNode* head, SentimentNode* low, SentimentNode* high) {
-        if (low != high && low != nullptr && high != nullptr && low != high->next) {
+    void quickSort(SentimentNode *head, SentimentNode *low, SentimentNode *high)
+    {
+        if (low != high && low != nullptr && high != nullptr && low != high->next)
+        {
             // Partition the list and get the pivot node
-            SentimentNode* pivot = partition(low, high);
+            SentimentNode *pivot = partition(low, high);
 
             // QuickSort the left side (before the pivot)
-            quickSort(head, low, getTailBefore(head, pivot));  // Get the node just before the pivot
+            quickSort(head, low, getTailBefore(head, pivot)); // Get the node just before the pivot
 
             // QuickSort the right side (after the pivot)
             quickSort(head, pivot->next, high);
@@ -346,18 +354,21 @@ public:
     }
 
     // Partition function for quick sort
-    SentimentNode* partition(SentimentNode* low, SentimentNode* high) {
-        int pivotRating = high->rating;  // Use the rating of the high node as pivot
-        SentimentNode* i = low;          // Start with the low node
-        SentimentNode* j = low;          // Traverse the list with j
+    SentimentNode *partition(SentimentNode *low, SentimentNode *high)
+    {
+        int pivotRating = high->rating; // Use the rating of the high node as pivot
+        SentimentNode *i = low;         // Start with the low node
+        SentimentNode *j = low;         // Traverse the list with j
 
         // Traverse from low to high and swap elements that are smaller than the pivot
-        while (j != high) {
-            if (j->rating <= pivotRating) {
+        while (j != high)
+        {
+            if (j->rating <= pivotRating)
+            {
                 // Swap ratings and reviews between i and j
                 std::swap(i->rating, j->rating);
                 std::swap(i->review, j->review);
-                i = i->next;  // Move i to the next node
+                i = i->next; // Move i to the next node
             }
             j = j->next;
         }
@@ -366,50 +377,55 @@ public:
         std::swap(i->rating, high->rating);
         std::swap(i->review, high->review);
 
-        return i;  // i is now the pivot
+        return i; // i is now the pivot
     }
 
     // Helper function to swap two nodes in the linked list
-    void swap(SentimentNode* a, SentimentNode* b) {
+    void swap(SentimentNode *a, SentimentNode *b)
+    {
         int tempRating = a->rating;
         a->rating = b->rating;
         b->rating = tempRating;
     }
 
-    SentimentNode* getTailBefore(SentimentNode* head, SentimentNode* pivot) {
-    if (head == nullptr || head == pivot) return nullptr;
+    SentimentNode *getTailBefore(SentimentNode *head, SentimentNode *pivot)
+    {
+        if (head == nullptr || head == pivot)
+            return nullptr;
 
-    SentimentNode* current = head;
-    while (current->next != pivot && current->next != nullptr) {
-        current = current->next;
+        SentimentNode *current = head;
+        while (current->next != pivot && current->next != nullptr)
+        {
+            current = current->next;
+        }
+        return current;
     }
-    return current;
-}
-
-
 
     SentimentNode *getHead()
     {
         return head;
     }
 
-    SentimentNode* getTail() {
-    SentimentNode* current = head;
-        if (!current) return nullptr;  // If head is nullptr, the list is empty
-        while (current->next != nullptr) {
-            current = current->next;  // Traverse to the last node
+    SentimentNode *getTail()
+    {
+        SentimentNode *current = head;
+        if (!current)
+            return nullptr; // If head is nullptr, the list is empty
+        while (current->next != nullptr)
+        {
+            current = current->next; // Traverse to the last node
         }
-        return current;  // Return the last node (tail)
-    }   
+        return current; // Return the last node (tail)
+    }
 
     // Linear search function to find all reviews with a specific rating
-    int* linearSearchAll(SentimentNode* head, int targetRating, int &resultCount)
+    int *linearSearchAll(SentimentNode *head, int targetRating, int &resultCount)
     {
         resultCount = 0;
         // Dynamically allocate memory to store result indices
-        int* indices = new int[getSize()];  
-               // Traverse the entire linked list to find all matching ratings
-        SentimentNode* current = head;
+        int *indices = new int[getSize()];
+        // Traverse the entire linked list to find all matching ratings
+        SentimentNode *current = head;
         int index = 0;
         while (current != nullptr)
         {
@@ -425,84 +441,97 @@ public:
         // If no matches were found, return nullptr
         if (resultCount == 0)
         {
-            delete[] indices;  // No matches, so clean up and return nullptr
+            delete[] indices; // No matches, so clean up and return nullptr
             return nullptr;
         }
 
-        return indices;  // Return array of indices for matching reviews
+        return indices; // Return array of indices for matching reviews
     }
 
-    int* binarySearchAllLinkedList(const SentimentLinkedList &reviews, int targetRating, int &resultCount) {
+    int *binarySearchAllLinkedList(const SentimentLinkedList &reviews, int targetRating, int &resultCount)
+    {
         int size = getSize();
-        
-        if (size == 0) {
-            return nullptr;  // If the list is empty, return nullptr
+
+        if (size == 0)
+        {
+            return nullptr; // If the list is empty, return nullptr
         }
 
-        int* indices = new int[size];
+        int *indices = new int[size];
         resultCount = 0;
 
         int low = 0;
         int high = size - 1;
 
         // Perform binary search on the linked list
-        while (low <= high) {
+        while (low <= high)
+        {
             // Find the middle index (this is a slow O(n) process in a linked list)
             int mid = low + (high - low) / 2;
-            SentimentNode* midNode = reviews.getNodeAt(mid);  // Traverse to get the node at 'mid'
+            SentimentNode *midNode = reviews.getNodeAt(mid); // Traverse to get the node at 'mid'
 
-            if (midNode == nullptr) {
+            if (midNode == nullptr)
+            {
                 break;
             }
 
-            int midRating = midNode->rating;  // Get the rating of the node
+            int midRating = midNode->rating; // Get the rating of the node
 
-            if (midRating == targetRating) {
+            if (midRating == targetRating)
+            {
                 // If the targetRating is found at mid, store the index
                 indices[resultCount] = mid;
                 resultCount++;
 
                 // Search to the left and right of the found element
                 int left = mid - 1;
-                while (left >= 0 && reviews.getNodeAt(left)->rating == targetRating) {
+                while (left >= 0 && reviews.getNodeAt(left)->rating == targetRating)
+                {
                     indices[resultCount] = left;
                     resultCount++;
                     left--;
                 }
 
                 int right = mid + 1;
-                while (right < size && reviews.getNodeAt(right)->rating == targetRating) {
+                while (right < size && reviews.getNodeAt(right)->rating == targetRating)
+                {
                     indices[resultCount] = right;
                     resultCount++;
                     right++;
                 }
 
-                break;  // Break after finding all the matches
-            } 
-            else if (midRating < targetRating) {
+                break; // Break after finding all the matches
+            }
+            else if (midRating < targetRating)
+            {
                 low = mid + 1;
-            } 
-            else {
+            }
+            else
+            {
                 high = mid - 1;
             }
         }
 
-        if (resultCount == 0) {
-            delete[] indices;  // If no results found, return nullptr
+        if (resultCount == 0)
+        {
+            delete[] indices; // If no results found, return nullptr
             return nullptr;
         }
 
-        return indices;  // Return indices of found reviews
+        return indices; // Return indices of found reviews
     }
 
     // Function to display all reviews matching the search rating in the linked list
-    void displaySearchedReviews(int searchRating) {
-        SentimentNode* current = head;
+    void displaySearchedReviews(int searchRating)
+    {
+        SentimentNode *current = head;
         bool found = false;
 
         // Traverse the list and print the reviews with the target rating
-        while (current != nullptr) {
-            if (current->rating == searchRating) {
+        while (current != nullptr)
+        {
+            if (current->rating == searchRating)
+            {
                 std::cout << "Review: " << current->review << ", Rating: " << current->rating << std::endl;
                 found = true;
             }
@@ -510,120 +539,125 @@ public:
         }
 
         // If no matching reviews are found
-        if (!found) {
+        if (!found)
+        {
             std::cout << "No reviews found with rating " << searchRating << "." << std::endl;
         }
     }
 
-    void clear() {
-        SentimentNode* current = head;
-        SentimentNode* nextNode;
+    void clear()
+    {
+        SentimentNode *current = head;
+        SentimentNode *nextNode;
 
         // Traverse through the linked list
-        while (current != nullptr) {
-            nextNode = current->next;  // Store the next node
-            delete current;            // Delete the current node
-            current = nextNode;        // Move to the next node
-        }
-
-        head = nullptr;  // Reset head to null, indicating the list is empty
-    }
-
-    void bubbleSortLinkedList() {
-    if (head == nullptr) return;
-
-    SentimentNode* current = head;
-    SentimentNode* next = nullptr;
-    bool swapped;
-
-    do {
-        swapped = false;
-        current = head;
-
-        while (current->next != nullptr) {
-            next = current->next;
-            if (current->rating > next->rating) {
-                std::swap(current->rating, next->rating);
-                swapped = true;
-            }
-            current = next;
-        }
-    } while (swapped);
-}
-
-void displaySentimentAnalysisResults()
-{
-    // Check if the list is empty
-    if (head == nullptr)
-    {
-        cout << "No reviews available for sentiment analysis." << endl;
-        return;
-    }
-
-    SentimentNode *current = head;  // Start from the head of the linked list
-
-    while (current)
-    {
-        // Output the current review's details to the console
-        cout << "Review: " << current->review << "\n" << endl;
-
-        cout << "Positive Words Count: " << current->positiveCount << endl;
-        cout << "Positive Words Found: ";
-        // Custom function to display words in a list
-        displayWords(current->positiveWordsList);
-
-        cout << "Negative Words Count: " << current->negativeCount << endl;
-        cout << "Negative Words Found: ";
-        // Custom function to display words in a list
-        displayWords(current->negativeWordsList);
-
-        // Output sentiment score and rating
-        cout << "Sentiment Score: " << current->sentimentScore << endl;
-        cout << "Given Rating: " << current->rating << endl;
-
-        cout << "----------------------------------------" << endl;
-
-        // Move to the next node in the linked list
-        current = current->next;
-    }
-}
-
-// Helper function to display the list of words (without using built-in containers)
-void displayWords(WordNode *wordList)
-{
-    WordNode *currentWord = wordList;
-
-    if (currentWord == nullptr)
-    {
-        cout << "None" << endl; // Handle case if no words are found
-        return;
-    }
-
-    // Iterate through the word list and print each word
-    while (currentWord)
-    {
-        cout << currentWord->word;
-        if (currentWord->next != nullptr)
+        while (current != nullptr)
         {
-            cout << ", ";  // Add a comma between words
+            nextNode = current->next; // Store the next node
+            delete current;           // Delete the current node
+            current = nextNode;       // Move to the next node
         }
-        currentWord = currentWord->next;
+
+        head = nullptr; // Reset head to null, indicating the list is empty
     }
-    cout << endl;  // End the line after printing all words
-}
 
+    void bubbleSortLinkedList()
+    {
+        if (head == nullptr)
+            return;
 
-    
+        SentimentNode *current = head;
+        SentimentNode *next = nullptr;
+        bool swapped;
+
+        do
+        {
+            swapped = false;
+            current = head;
+
+            while (current->next != nullptr)
+            {
+                next = current->next;
+                if (current->rating > next->rating)
+                {
+                    std::swap(current->rating, next->rating);
+                    swapped = true;
+                }
+                current = next;
+            }
+        } while (swapped);
+    }
+
+    void displaySentimentAnalysisResults()
+    {
+        // Check if the list is empty
+        if (head == nullptr)
+        {
+            cout << "No reviews available for sentiment analysis." << endl;
+            return;
+        }
+
+        SentimentNode *current = head; // Start from the head of the linked list
+
+        while (current)
+        {
+            // Output the current review's details to the console
+            cout << "Review: " << current->review << "\n"
+                 << endl;
+
+            cout << "Positive Words Count: " << current->positiveCount << endl;
+            cout << "Positive Words Found: ";
+            // Custom function to display words in a list
+            displayWords(current->positiveWordsList);
+
+            cout << "Negative Words Count: " << current->negativeCount << endl;
+            cout << "Negative Words Found: ";
+            // Custom function to display words in a list
+            displayWords(current->negativeWordsList);
+
+            // Output sentiment score and rating
+            cout << "Sentiment Score: " << current->sentimentScore << endl;
+            cout << "Given Rating: " << current->rating << endl;
+
+            cout << "----------------------------------------" << endl;
+
+            // Move to the next node in the linked list
+            current = current->next;
+        }
+    }
+
+    // Helper function to display the list of words (without using built-in containers)
+    void displayWords(WordNode *wordList)
+    {
+        WordNode *currentWord = wordList;
+
+        if (currentWord == nullptr)
+        {
+            cout << "None" << endl; // Handle case if no words are found
+            return;
+        }
+
+        // Iterate through the word list and print each word
+        while (currentWord)
+        {
+            cout << currentWord->word;
+            if (currentWord->next != nullptr)
+            {
+                cout << ", "; // Add a comma between words
+            }
+            currentWord = currentWord->next;
+        }
+        cout << endl; // End the line after printing all words
+    }
 };
 
 // Function to get the node at a specific index
-    SentimentNode* SentimentLinkedList::getNodeAt(int index) const
+SentimentNode *SentimentLinkedList::getNodeAt(int index) const
+{
+    SentimentNode *current = head;
+    for (int i = 0; i < index && current != nullptr; ++i)
     {
-        SentimentNode* current = head;
-        for (int i = 0; i < index && current != nullptr; ++i)
-        {
-            current = current->next;
-        }
-        return current;
+        current = current->next;
     }
-
+    return current;
+}

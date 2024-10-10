@@ -1,7 +1,7 @@
 
 /**
  * SummaryReportGenerator.h
- * 
+ *
  * This class processes reviews, analyzes sentiment using positive and negative
  * word lists, and generates detailed reports including statistics and visualizations
  */
@@ -59,7 +59,7 @@ public:
         allWords.clear();
     }
 
-    void analyzeReviews(const CustomArray& reviews)
+    void analyzeReviews(const CustomArray &reviews)
     {
         convertArrayToLinkedList(reviews);
         analyzeReviewsInLinkedList();
@@ -195,17 +195,20 @@ public:
         while (current != nullptr)
         {
             // Check frequency and increment counts accordingly
-            if (current->data.frequency >= maxFreq * 0.7) {
+            if (current->data.frequency >= maxFreq * 0.7)
+            {
                 highFreq++;
                 // Append the word to the high frequency words list
                 highFreqWords += current->data.word + ", ";
             }
-            else if (current->data.frequency >= maxFreq * 0.3) {
+            else if (current->data.frequency >= maxFreq * 0.3)
+            {
                 medFreq++;
                 // Append the word to the medium frequency words list
                 medFreqWords += current->data.word + ", ";
             }
-            else {
+            else
+            {
                 lowFreq++;
             }
             current = current->next;
@@ -224,7 +227,6 @@ public:
         outputFile << "\n\n6. DETAILED WORD FREQUENCY LIST\n\n";
 
         outputFile << "Frequency of each words used in overall reviews, listed in descending order based on frequency using Insertion Sort\n\n";
-
 
         LinkedList<WordFrequency> wordFrequencies = getWordFrequencies();
 
@@ -260,7 +262,7 @@ public:
 
 private:
     // Method to convert cleaned reviews to linked list
-    void convertArrayToLinkedList(const CustomArray& reviews)
+    void convertArrayToLinkedList(const CustomArray &reviews)
     {
         // Convert the array-based reviews to our linked list structure
         for (int i = 0; i < reviews.getSize(); ++i)
@@ -276,24 +278,26 @@ private:
         Node<string> *current = reviewLinkedList.getHead();
         int reviewsProcessed = 0;
 
-        while (current != nullptr) {
+        while (current != nullptr)
+        {
             analyzeReview(current->data);
-            
+
             reviewsProcessed++;
-            if (reviewsProcessed % PROGRESS_INTERVAL == 0) {
+            if (reviewsProcessed % PROGRESS_INTERVAL == 0)
+            {
                 cout << "Processed " << reviewsProcessed << " reviews\n";
             }
-            
+
             current = current->next;
         }
-        
+
         cout << "\nTotal reviews analyzed: " << reviewsProcessed << endl;
     }
 
     void analyzeReview(const string &review)
     {
         // Handling empty review
-        if (review.empty()) 
+        if (review.empty())
         {
             cerr << "Warning: Empty review encountered" << endl;
             return;
@@ -311,11 +315,13 @@ private:
             word.erase(remove_if(word.begin(), word.end(), ::ispunct), word.end());
 
             // Check if it's a positive or negative word using Binary Search
-            if (allWords.binarySearch(word, positiveWords)) {
+            if (allWords.binarySearch(word, positiveWords))
+            {
                 totalPositiveWords++;
                 allWords.insert(word);
             }
-            else if (allWords.binarySearch(word, negativeWords)) {
+            else if (allWords.binarySearch(word, negativeWords))
+            {
                 totalNegativeWords++;
                 allWords.insert(word);
             }
@@ -364,7 +370,7 @@ private:
         cout << "Histogram sorted with Insertion Sort" << endl;
 
         outputFile << "\nHistogram of Top 20 words used in overall reviews, "
-           << "presented in descending order based on frequency using Insertion Sort\n\n";
+                   << "presented in descending order based on frequency using Insertion Sort\n\n";
 
         current = insertionSortList.getHead();
 

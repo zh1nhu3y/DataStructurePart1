@@ -105,13 +105,16 @@ public:
     }
 
     // New function to get the value at an index (which would just return a word here)
-    std::string getValue(int index) const {
-        return getWordAt(index);  // Reuse getWordAt to get the word at the given index
+    std::string getValue(int index) const
+    {
+        return getWordAt(index); // Reuse getWordAt to get the word at the given index
     }
 
     // Function to display all words
-    void displayWords() const {
-        for (int i = 0; i < size; ++i) {
+    void displayWords() const
+    {
+        for (int i = 0; i < size; ++i)
+        {
             std::cout << words[i] << std::endl;
         }
     }
