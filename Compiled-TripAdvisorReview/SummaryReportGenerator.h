@@ -14,7 +14,6 @@
 #include <climits>
 #include <iomanip>
 #include <chrono>
-#include "LinkedList.h"
 
 using namespace std;
 using namespace std::chrono;
@@ -164,25 +163,62 @@ public:
             outputFile << "Trend: Reviews show moderate emotional content\n";
         }
 
+        // // 5. Word Frequency Distribution
+        // outputFile << "\n\n5. WORD FREQUENCY DISTRIBUTION\n\n";
+        // int highFreq = 0, medFreq = 0, lowFreq = 0;
+        // current = frequencies.getHead();
+
+        // while (current != nullptr)
+        // {
+        //     if (current->data.frequency >= maxFreq * 0.7)
+        //         highFreq++;
+        //     else if (current->data.frequency >= maxFreq * 0.3)
+        //         medFreq++;
+        //     else
+        //         lowFreq++;
+        //     current = current->next;
+        // }
+
+        // outputFile << "High frequency words (>70% of max): " << highFreq << "\n";
+        // outputFile << "Medium frequency words (30-70% of max): " << medFreq << "\n";
+        // outputFile << "Low frequency words (<30% of max): " << lowFreq << "\n";
+
         // 5. Word Frequency Distribution
         outputFile << "\n\n5. WORD FREQUENCY DISTRIBUTION\n\n";
         int highFreq = 0, medFreq = 0, lowFreq = 0;
         current = frequencies.getHead();
 
+        // Create strings to hold the words for high and medium frequencies
+        string highFreqWords;
+        string medFreqWords;
+
         while (current != nullptr)
         {
-            if (current->data.frequency >= maxFreq * 0.7)
+            // Check frequency and increment counts accordingly
+            if (current->data.frequency >= maxFreq * 0.7) {
                 highFreq++;
-            else if (current->data.frequency >= maxFreq * 0.3)
+                // Append the word to the high frequency words list
+                highFreqWords += current->data.word + ", ";
+            }
+            else if (current->data.frequency >= maxFreq * 0.3) {
                 medFreq++;
-            else
+                // Append the word to the medium frequency words list
+                medFreqWords += current->data.word + ", ";
+            }
+            else {
                 lowFreq++;
+            }
             current = current->next;
         }
 
+        // Output the frequency counts
         outputFile << "High frequency words (>70% of max): " << highFreq << "\n";
         outputFile << "Medium frequency words (30-70% of max): " << medFreq << "\n";
         outputFile << "Low frequency words (<30% of max): " << lowFreq << "\n";
+
+        // Output the actual words for high and medium frequencies
+        outputFile << "\nHigh frequency words: " << highFreqWords << "\n";
+        outputFile << "Medium frequency words: " << medFreqWords << "\n";
 
         // 6. Detailed Word List
         outputFile << "\n\n6. DETAILED WORD FREQUENCY LIST\n\n";
@@ -216,23 +252,6 @@ public:
 
         outputFile.close();
         cout << "Summary Report Generated to: " << outputFilename << endl;
-
-        // ... (keep sorting and searching sections)
-        
-    string wordToSearch = "great";
-
-        cout << "\n=======SEARCH PERFORMANCE COMPARISON========\n";
-
-        cout << "\nWord searched: \"" << wordToSearch << "\"\n";
-
-        // Linear Search
-        int linearFreq = allWords.linearSearch(wordToSearch);
-
-        // Two-Pointer Search
-        int twoPointerFreq = allWords.twoPointerSearch(wordToSearch);
-
-        cout << "Linear Search result: Frequency = " << linearFreq << "\n";
-        cout << "Two-Pointer Search result: Frequency = " << twoPointerFreq << "\n";
     }
 
     int getTotalReviews() const { return totalReviews; }
@@ -301,13 +320,13 @@ private:
                 allWords.insert(word);
             }
         }
-        cout << "Finished analyzing review: " << review << endl;
+        // cout << "Finished analyzing review: " << review << endl;
     }
 
     // Sorted Histogram
     void generateHistogram(ofstream &outputFile, int maxBars = 20)
     {
-        outputFile << "\n\n9. WORD FREQUENCY HISTOGRAM\n";
+        outputFile << "\n\n7. WORD FREQUENCY HISTOGRAM\n";
 
         // Create two copies of the frequency list for comparison
         LinkedList<WordFrequency> bubbleSortList = getWordFrequencies();
@@ -326,7 +345,7 @@ private:
         auto insertionDuration = duration_cast<microseconds>(endInsertion - startInsertion);
 
         // Output sorting times
-        cout << "\nBubble Sort Time: " << insertionDuration.count() << " ms\n";
+        cout << "\nBubble Sort Time: " << bubbleDuration.count() << " ms\n";
         cout << "\nInsertion Sort Time: " << insertionDuration.count() << " ms\n\n";
 
         // Use any sort list for histogram (you could use either one)
@@ -344,7 +363,8 @@ private:
         // Generate histogram
         cout << "Histogram sorted with Insertion Sort" << endl;
 
-        outputFile << "\nHistogram of Top 20 words used in overall reviews, presented in descending order based on frequency using Insertion Sort\n\n";
+        outputFile << "\nHistogram of Top 20 words used in overall reviews, "
+           << "presented in descending order based on frequency using Insertion Sort\n\n";
 
         current = insertionSortList.getHead();
 
@@ -363,7 +383,7 @@ private:
 
     void generateSentimentDistribution(ofstream &outputFile) const
     {
-        outputFile << "\n\n10. SENTIMENT DISTRIBUTION GRAPH\n\n";
+        outputFile << "\n\n8. SENTIMENT DISTRIBUTION GRAPH\n\n";
         int total = totalPositiveWords + totalNegativeWords;
         if (total == 0)
             return;

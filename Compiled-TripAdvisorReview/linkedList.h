@@ -6,9 +6,6 @@
  * word frequency analysis functionalities
  */
 
-#ifndef LINKEDLIST_H
-#define LINKEDLIST_H
-
 #include <iostream>
 #include <string>
 #include <chrono>
@@ -112,7 +109,7 @@ public:
         return size;
     }
 
-    // Sorts the linked list by frequency using Bubble Sort
+    // Bubble Sort
     void bubbleSort()
     {
         if (!head || !head->next)
@@ -143,7 +140,7 @@ public:
         } while (swapped);
     }
 
-    // Sorts the linked list by frequency using Insertion Sort
+    // Insertion Sort
     void insertionSort()
     {
         if (!head || !head->next)
@@ -179,100 +176,6 @@ public:
         head = sorted;
     }
 
-    // Performs linear search and calculates the frequency of a word
-    int linearSearch(const string &word)
-    {
-        const int iterations = 1000; // For more accurate timing
-        int frequency = 0;
-        
-        auto start = high_resolution_clock::now();
-        
-        // Run the search multiple times to measure performance
-        for (int i = 0; i < iterations; i++) {
-            frequency = 0;  // Reset frequency for each iteration
-            Node<T> *current = head;
-            
-            // Traverse the linked list
-            while (current != nullptr)
-            {
-                if (current->data == word)
-                {
-                    frequency += current->frequency;  // Count frequency of the word
-                }
-                current = current->next;
-            }
-        }
-        
-        auto end = high_resolution_clock::now();
-        auto duration = duration_cast<microseconds>(end - start);
-        double avgTime = static_cast<double>(duration.count()) / iterations;
-        
-        // Display timing results
-        cout << "Linear Search took an average of " << avgTime << " microseconds (" 
-            << duration.count() << " microseconds total for " << iterations << " iterations)\n";
-        
-        return frequency;  // Return the frequency of the word found
-    }
-
-    // Performs two-pointer search to find the frequency of a word
-    int twoPointerSearch(const string &word)
-    {
-        const int iterations = 1000; // For more accurate timing
-        int frequency = 0;
-        
-        auto start = high_resolution_clock::now();
-        
-        // Run the search multiple times to measure performance
-        for (int i = 0; i < iterations; i++) {
-            frequency = 0;  // Reset frequency for each iteration
-
-            if (head == nullptr) continue;  // Edge case: Empty list
-
-            Node<T> *slow = head;
-            Node<T> *fast = head;
-            
-            // Traverse the linked list using two pointers
-            while (fast != nullptr && fast->next != nullptr)
-            {
-                if (slow->data == word)
-                {
-                    frequency += slow->frequency;  // Count frequency for slow pointer
-                }
-                if (fast->data == word)
-                {
-                    frequency += fast->frequency;  // Count frequency for fast pointer
-                }
-                if (fast->next->data == word)
-                {
-                    frequency += fast->next->frequency;  // Count frequency for fast->next
-                }
-
-                slow = slow->next;
-                fast = fast->next->next;
-            }
-            
-            // Edge case: Handle remaining nodes
-            if (fast != nullptr && slow != fast && fast->data == word)
-            {
-                frequency += fast->frequency;
-            }
-            if (slow != nullptr && slow->data == word)
-            {
-                frequency += slow->frequency;
-            }
-        }
-        
-        auto end = high_resolution_clock::now();
-        auto duration = duration_cast<microseconds>(end - start);
-        double avgTime = static_cast<double>(duration.count()) / iterations;
-        
-        // Display timing results
-        cout << "Two-Pointer Search took an average of " << avgTime << " microseconds (" 
-            << duration.count() << " microseconds total for " << iterations << " iterations)\n";
-        
-        return frequency;  // Return the frequency of the word found
-    }
-
     // Binary search to check if a word exists in a sorted word array
     bool binarySearch(const string& word, const WordArray& wordArray) const {
         int left = 0;
@@ -294,5 +197,3 @@ public:
         return false;
     }
 };
-
-#endif // LINKEDLIST_H
