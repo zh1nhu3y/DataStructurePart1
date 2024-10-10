@@ -347,7 +347,7 @@ private:
         cout << "\nBubble Sort Time: " << bubbleDuration.count() << " ms\n";
         cout << "\nInsertion Sort Time: " << insertionDuration.count() << " ms\n\n";
 
-        // Use insertion sort list for histogram (faster compared to Bubble Sort)
+        // Use Insertion Sort for histogram (faster compared to Bubble Sort)
         Node<WordFrequency> *current = insertionSortList.getHead();
 
         // Find maximum frequency for scaling
