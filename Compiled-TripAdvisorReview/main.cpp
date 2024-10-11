@@ -201,8 +201,8 @@ void displayReviewMenu(CustomArray &reviews, ArrayOperation &operations, Sentime
                 // duration<double> bduration = duration_cast<milliseconds>(bstop - bstart);
                 duration<double, milli> bduration = bstop - bstart;
                 cout << "Linked List Quick Sort Time: " << bduration.count() << " milliseconds" << endl;
-                cout << "Done Sorting" << endl;
-                cout << "Linked List Quick Sort Time: " << bduration.count() << " seconds" << endl;
+                // cout << "Done Sorting" << endl;
+                // cout << "Linked List Quick Sort Time: " << bduration.count() << " seconds" << endl;
                 cout << "Done Sorting with Quick Sort" << endl;
             }
             else
@@ -212,7 +212,7 @@ void displayReviewMenu(CustomArray &reviews, ArrayOperation &operations, Sentime
             // ========= Bubble Sort ============
             reviews.clear();                                                                                                                                          // Clear the list
             sentimentList.clear();                                                                                                                                    // Clear the list
-            cleanCSV("C:/Users/lawme/OneDrive - Asia Pacific University/Degree/Sem 2/Data Structure/Assignment/DSTR_P1_Data/tripadvisor_hotel_reviews.csv", reviews); // Load data from CSV file
+            cleanCSV("C:/Users/Zhin Huey/OneDrive - Asia Pacific University/Degree Year2-SEM2/Data Structure/Assignement 1/tripadvisor_hotel_reviews.csv", reviews); // Load data from CSV file
 
             for (int i = 0; i < reviews.getSize(); i++)
             {
@@ -226,7 +226,7 @@ void displayReviewMenu(CustomArray &reviews, ArrayOperation &operations, Sentime
             operations.bubbleSortArray(reviews);
             auto cstop = high_resolution_clock::now();
             duration<double, milli> cduration = cstop - cstart;
-            cout << "Linked List Bubble Sort Time: " << cduration.count() << " milliseconds" << endl;
+            cout << "Array Bubble Sort Time: " << cduration.count() << " milliseconds" << endl;
 
             auto dstart = high_resolution_clock::now();
             sentimentList.bubbleSortLinkedList();
@@ -245,51 +245,81 @@ void displayReviewMenu(CustomArray &reviews, ArrayOperation &operations, Sentime
             int resultCountArrayBinary = 0, resultCountLLBinary = 0;
             int resultCountArrayLinear = 0, resultCountLLLinear = 0;
 
-            // Input Rating
             cout << "Enter the rating you want to display: ";
             cin >> searchRating;
 
             cout << "Start searching..." << endl;
-
             // Binary Search on Array
+            
             auto arrstart = high_resolution_clock::now();
             int *indicesBinaryArray = operations.binarySearchAll(reviews, searchRating, resultCountArrayBinary);
             operations.displaySearchedReviews(reviews, indicesBinaryArray, resultCountArrayBinary);
             auto arrstop = high_resolution_clock::now();
-            auto arrduration = duration_cast<microseconds>(arrstop - arrstart); // Proper microseconds casting
-            std::cout << "Binary Search on Array took: " << arrduration.count() << " microseconds" << std::endl;
+            auto arrduration = duration_cast<microseconds>(arrstop - arrstart);
 
             // Binary Search on Linked List
+            cout << "\nPerforming binary search on linked list..." << endl;
             auto llstart = high_resolution_clock::now();
-            int *indicesBinaryLL = sentimentList.binarySearchAllLinkedList(sentimentList, searchRating, resultCountLLBinary);
-            sentimentList.displaySearchedReviews(searchRating);
+            int *indicesBinaryLL = new int[sentimentList.getSize()];  // Allocate space for indices
+            SentimentNode* current = sentimentList.getHead();
+            int index = 0;
+            while (current != nullptr) {
+                if (current->rating == searchRating) {
+                    indicesBinaryLL[resultCountLLBinary++] = index;
+                }
+                current = current->next;
+                index++;
+            }
+            
+            if (resultCountLLBinary > 0) {
+                cout << "Found " << resultCountLLBinary << " reviews in linked list with rating " << searchRating << endl;
+                sentimentList.displaySearchedReviews(searchRating);
+            } else {
+                cout << "No reviews found in linked list with rating " << searchRating << endl;
+            }
             auto llstop = high_resolution_clock::now();
-            auto llduration = duration_cast<microseconds>(llstop - llstart); // Proper microseconds casting
-            std::cout << "Binary Search on Linked List took: " << llduration.count() << " microseconds" << std::endl;
+            auto llduration = duration_cast<microseconds>(llstop - llstart);
 
             // Linear Search on Array
             auto arrlnstart = high_resolution_clock::now();
             int *indicesLinearArray = operations.linearSearchAll(reviews, searchRating, resultCountArrayLinear);
             operations.displaySearchedReviews(reviews, indicesLinearArray, resultCountArrayLinear);
             auto arrlnstop = high_resolution_clock::now();
-            auto arrlnduration = duration_cast<microseconds>(arrlnstop - arrlnstart); // Proper microseconds casting
-            std::cout << "Linear Search on Array took: " << arrlnduration.count() << " microseconds" << std::endl;
+            auto arrlnduration = duration_cast<microseconds>(arrlnstop - arrlnstart);
 
             // Linear Search on Linked List
+            cout << "\nPerforming linear search on linked list..." << endl;
             auto lllnstart = high_resolution_clock::now();
-            int *indicesLinearLL = sentimentList.linearSearchAll(sentimentList.getHead(), searchRating, resultCountLLLinear);
-            sentimentList.displaySearchedReviews(searchRating);
+            int *indicesLinearLL = new int[sentimentList.getSize()];  // Allocate space for indices
+            current = sentimentList.getHead();
+            index = 0;
+            resultCountLLLinear = 0;
+            while (current != nullptr) {
+                if (current->rating == searchRating) {
+                    indicesLinearLL[resultCountLLLinear++] = index;
+                }
+                current = current->next;
+                index++;
+            }
+            
+            if (resultCountLLLinear > 0) {
+                cout << "Found " << resultCountLLLinear << " reviews in linked list with rating " << searchRating << endl;
+                sentimentList.displaySearchedReviews(searchRating);
+            } else {
+                cout << "No reviews found in linked list with rating " << searchRating << endl;
+            }
             auto lllnstop = high_resolution_clock::now();
-            auto lllnduration = duration_cast<microseconds>(lllnstop - lllnstart); // Proper microseconds casting
-            std::cout << "Linear Search on Linked List took: " << lllnduration.count() << " microseconds" << std::endl;
-
-            cout << fixed << setprecision(2);
+            auto lllnduration = duration_cast<microseconds>(lllnstop - lllnstart);
 
             cout << "Done searching!" << endl;
-            cout << "Array Binary Search Time: " << arrduration.count() << " milliseconds" << endl;
-            cout << "Linked List Binary Search Time: " << llduration.count() << " milliseconds" << endl;
-            cout << "Array Linear Search Time: " << arrlnduration.count() << " milliseconds" << endl;
-            cout << "Linked List Linear Search Time: " << lllnduration.count() << " milliseconds" << endl;
+
+            cout << "\n============== Timing Results ===============" << endl;
+
+            cout << fixed << setprecision(3);
+            cout << "Array Binary Search Time: " << arrduration.count() / 1000.0 << " millisecond" << endl;
+            cout << "Linked List Binary Search Time: " << llduration.count() / 1000.0 << " millisecond" << endl;
+            cout << "Array Linear Search Time: " << arrlnduration.count() / 1000.0 << " millisecond" << endl;
+            cout << "Linked List Linear Search Time: " << lllnduration.count() / 1000.0 << " millisecond" << endl;
 
             // Cleanup dynamically allocated memory
             delete[] indicesBinaryArray;
@@ -324,24 +354,24 @@ int main()
     // std::string outputFile = "C:\\Users\\jason\\OneDrive - Asia Pacific University\\DEGREE APD2F2402\\YEAR 2 SEM 2\\DSTR\\Assignment\\cleaned_tripadvisor_hotel_reviews.csv";
 
     // MJ Input file path
-    std::string inputFile = "C:/Users/lawme/OneDrive - Asia Pacific University/Degree/Sem 2/Data Structure/Assignment/DSTR_P1_Data/tripadvisor_hotel_reviews.csv";
-    std::string outputFile = "C:/Users/lawme/OneDrive - Asia Pacific University/Degree/Sem 2/Data Structure/Assignment/DSTR_P1_Data/cleaned_tripadvisor_hotel_reviews.csv";
+    // std::string inputFile = "C:/Users/lawme/OneDrive - Asia Pacific University/Degree/Sem 2/Data Structure/Assignment/DSTR_P1_Data/tripadvisor_hotel_reviews.csv";
+    // std::string outputFile = "C:/Users/lawme/OneDrive - Asia Pacific University/Degree/Sem 2/Data Structure/Assignment/DSTR_P1_Data/cleaned_tripadvisor_hotel_reviews.csv";
 
     // Huey File path
-    // std::string inputFile = "C:/Users/Zhin Huey/OneDrive - Asia Pacific University/Degree Year2-SEM2/Data Structure/Assignement 1/tripadvisor_hotel_reviews.csv";
-    // std::string outputFile = "C:/Users/Zhin Huey/OneDrive - Asia Pacific University/Degree Year2-SEM2/Data Structure/Assignement 1/organized_hotel_reviews.csv";
+    std::string inputFile = "C:/Users/Zhin Huey/OneDrive - Asia Pacific University/Degree Year2-SEM2/Data Structure/Assignement 1/tripadvisor_hotel_reviews.csv";
+    std::string outputFile = "C:/Users/Zhin Huey/OneDrive - Asia Pacific University/Degree Year2-SEM2/Data Structure/Assignement 1/organized_hotel_reviews.csv";
 
     // Initialize custom array with a starting capacity
     CustomArray reviews(25000);
 
     // store positive words, negative words into array
     WordArray positiveWords, negativeWords;
-    // positiveWords.loadWordsFromFile("C:/Users/Zhin Huey/OneDrive - Asia Pacific University/Degree Year2-SEM2/Data Structure/Assignement 1/positive-words.txt");
-    // negativeWords.loadWordsFromFile("C:/Users/Zhin Huey/OneDrive - Asia Pacific University/Degree Year2-SEM2/Data Structure/Assignement 1/negative-words.txt");
+    positiveWords.loadWordsFromFile("C:/Users/Zhin Huey/OneDrive - Asia Pacific University/Degree Year2-SEM2/Data Structure/Assignement 1/positive-words.txt");
+    negativeWords.loadWordsFromFile("C:/Users/Zhin Huey/OneDrive - Asia Pacific University/Degree Year2-SEM2/Data Structure/Assignement 1/negative-words.txt");
 
     // MJ File path
-    positiveWords.loadWordsFromFile("C:/Users/lawme/OneDrive - Asia Pacific University/Degree/Sem 2/Data Structure/Assignment/DSTR_P1_Data/positive-words.txt");
-    negativeWords.loadWordsFromFile("C:/Users/lawme/OneDrive - Asia Pacific University/Degree/Sem 2/Data Structure/Assignment/DSTR_P1_Data/negative-words.txt");
+    // positiveWords.loadWordsFromFile("C:/Users/lawme/OneDrive - Asia Pacific University/Degree/Sem 2/Data Structure/Assignment/DSTR_P1_Data/positive-words.txt");
+    // negativeWords.loadWordsFromFile("C:/Users/lawme/OneDrive - Asia Pacific University/Degree/Sem 2/Data Structure/Assignment/DSTR_P1_Data/negative-words.txt");
 
     // Create a SentimentLinkedList to analyze the reviews
     SentimentLinkedList sentimentList(positiveWords, negativeWords);
