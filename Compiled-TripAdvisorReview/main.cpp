@@ -400,13 +400,13 @@ int main()
             // duration<double> aduration = duration_cast<microseconds>(asend - asstart) ;
             duration<double, milli> aduration = asend - asstart;
             cout << "Sentiment Analysis Completed!" << endl;
-            cout << "Time taken: " << aduration.count() << " milliseconds" << endl;
+            cout << "Time taken for Sentiment Analysis: " << aduration.count() << " milliseconds" << endl;
 
             auto bubblestart = high_resolution_clock::now();
             sentimentList.bubbleSortSentiment();
             auto bubbleend = high_resolution_clock::now();
             duration<double, milli> bubbleduration = bubbleend - bubblestart;
-            cout << "Time taken: " << bubbleduration.count() << " milliseconds" << endl;
+            cout << "Time taken for Bubble Sort: " << bubbleduration.count() << " milliseconds" << endl;
 
             // Save sentiment analysis results to a file
             cout << "Saving into File..." << endl;
