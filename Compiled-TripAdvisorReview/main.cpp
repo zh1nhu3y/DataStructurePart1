@@ -220,11 +220,19 @@ void displayReviewMenu(CustomArray &reviews, ArrayOperation &operations, Sentime
             }
 
             cout << "Start Sorting with Bubble Sort..." << endl;
+<<<<<<< Updated upstream
+=======
+
+>>>>>>> Stashed changes
             auto cstart = high_resolution_clock::now();
             operations.bubbleSortArray(reviews);
             auto cstop = high_resolution_clock::now();
             duration<double, milli> cduration = cstop - cstart;
+<<<<<<< Updated upstream
             cout << "Linked List Bubble Sort Time: " << cduration.count() << " milliseconds" << endl;
+=======
+            cout << "Array Bubble Sort Time: " << cduration.count() << " milliseconds" << endl;
+>>>>>>> Stashed changes
 
             auto dstart = high_resolution_clock::now();
             sentimentList.bubbleSortLinkedList();
@@ -489,10 +497,6 @@ int main()
         }
         }
     } while (choice != 0);
-
-    // MJ File path
-    // positiveWords.loadWordsFromFile("C:/Users/lawme/OneDrive - Asia Pacific University/Degree/Sem 2/Data Structure/Assignment/DSTR_P1_Data/positive-words.txt");
-    // negativeWords.loadWordsFromFile("C:/Users/lawme/OneDrive - Asia Pacific University/Degree/Sem 2/Data Structure/Assignment/DSTR_P1_Data/negative-words.txt");
 
     // Huey File path
     // positiveWords.loadWordsFromFile("C:/Users/Zhin Huey/OneDrive - Asia Pacific University/Degree Year2-SEM2/Data Structure/Assignement 1/positive-words.txt");
