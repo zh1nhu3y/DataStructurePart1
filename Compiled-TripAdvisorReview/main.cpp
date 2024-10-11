@@ -200,6 +200,8 @@ void displayReviewMenu(CustomArray &reviews, ArrayOperation &operations, Sentime
                 auto bstop = high_resolution_clock::now();
                 // duration<double> bduration = duration_cast<milliseconds>(bstop - bstart);
                 duration<double, milli> bduration = bstop - bstart;
+                cout << "Linked List Quick Sort Time: " << bduration.count() << " milliseconds" << endl;
+                cout << "Done Sorting" << endl;
                 cout << "Linked List Quick Sort Time: " << bduration.count() << " seconds" << endl;
                 cout << "Done Sorting with Quick Sort" << endl;
             }
@@ -220,19 +222,11 @@ void displayReviewMenu(CustomArray &reviews, ArrayOperation &operations, Sentime
             }
 
             cout << "Start Sorting with Bubble Sort..." << endl;
-<<<<<<< Updated upstream
-=======
-
->>>>>>> Stashed changes
             auto cstart = high_resolution_clock::now();
             operations.bubbleSortArray(reviews);
             auto cstop = high_resolution_clock::now();
             duration<double, milli> cduration = cstop - cstart;
-<<<<<<< Updated upstream
             cout << "Linked List Bubble Sort Time: " << cduration.count() << " milliseconds" << endl;
-=======
-            cout << "Array Bubble Sort Time: " << cduration.count() << " milliseconds" << endl;
->>>>>>> Stashed changes
 
             auto dstart = high_resolution_clock::now();
             sentimentList.bubbleSortLinkedList();
@@ -289,14 +283,13 @@ void displayReviewMenu(CustomArray &reviews, ArrayOperation &operations, Sentime
             auto lllnduration = duration_cast<microseconds>(lllnstop - lllnstart); // Proper microseconds casting
             std::cout << "Linear Search on Linked List took: " << lllnduration.count() << " microseconds" << std::endl;
 
-            // Display results for each search method
-            operations.displaySearchedReviews(reviews, indicesBinaryArray, resultCountArrayBinary);
+            cout << fixed << setprecision(2);
 
             cout << "Done searching!" << endl;
-            cout << "Array Binary Search Time: " << arrduration.count() << " microseconds" << endl;
-            cout << "Linked List Binary Search Time: " << llduration.count() << " microseconds" << endl;
-            cout << "Array Linear Search Time: " << arrlnduration.count() << " microseconds" << endl;
-            cout << "Linked List Linear Search Time: " << lllnduration.count() << " microseconds" << endl;
+            cout << "Array Binary Search Time: " << arrduration.count() << " milliseconds" << endl;
+            cout << "Linked List Binary Search Time: " << llduration.count() << " milliseconds" << endl;
+            cout << "Array Linear Search Time: " << arrlnduration.count() << " milliseconds" << endl;
+            cout << "Linked List Linear Search Time: " << lllnduration.count() << " milliseconds" << endl;
 
             // Cleanup dynamically allocated memory
             delete[] indicesBinaryArray;
