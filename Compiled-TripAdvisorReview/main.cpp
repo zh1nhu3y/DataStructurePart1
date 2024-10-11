@@ -200,7 +200,7 @@ void displayReviewMenu(CustomArray &reviews, ArrayOperation &operations, Sentime
                 auto bstop = high_resolution_clock::now();
                 // duration<double> bduration = duration_cast<milliseconds>(bstop - bstart);
                 duration<double, milli> bduration = bstop - bstart;
-                cout << "Linked List Quick Sort Time: " << bduration.count() << " seconds" << endl;
+                cout << "Linked List Quick Sort Time: " << bduration.count() << " milliseconds" << endl;
                 cout << "Done Sorting" << endl;
             }
             else
@@ -210,7 +210,7 @@ void displayReviewMenu(CustomArray &reviews, ArrayOperation &operations, Sentime
             // ========= Bubble Sort ============
             reviews.clear();                                                                                                                                            // Clear the list
             sentimentList.clear();                                                                                                                                      // Clear the list
-            cleanCSV("C:\\Users\\jason\\OneDrive - Asia Pacific University\\DEGREE APD2F2402\\YEAR 2 SEM 2\\DSTR\\Assignment\\tripadvisor_hotel_reviews.csv", reviews); // Load data from CSV file
+            cleanCSV("C:/Users/Zhin Huey/OneDrive - Asia Pacific University/Degree Year2-SEM2/Data Structure/Assignement 1/tripadvisor_hotel_reviews.csv", reviews); // Load data from CSV file
 
             for (int i = 0; i < reviews.getSize(); i++)
             {
@@ -251,7 +251,7 @@ void displayReviewMenu(CustomArray &reviews, ArrayOperation &operations, Sentime
             operations.displaySearchedReviews(reviews, indicesBinaryArray, resultCountArrayBinary);
             auto arrstop = high_resolution_clock::now();
             // duration<double> arrduration = duration_cast<microseconds>(arrstop - arrstart);
-            duration<double, micro> arrduration = arrstop - arrstart;
+            duration<double, milli> arrduration = arrstop - arrstart;
 
             // Binary Search on Linked List (inefficient but for comparison purposes)
             auto llstart = high_resolution_clock::now();
@@ -259,7 +259,7 @@ void displayReviewMenu(CustomArray &reviews, ArrayOperation &operations, Sentime
             sentimentList.displaySearchedReviews(searchRating);
             auto llstop = high_resolution_clock::now();
             // duration<double> llduration = duration_cast<microseconds>(llstop - llstart);
-            duration<double, micro> llduration = llstop - llstart;
+            duration<double, milli> llduration = llstop - llstart;
 
             // Linear Search on Array
             auto arrlnstart = high_resolution_clock::now();
@@ -267,7 +267,7 @@ void displayReviewMenu(CustomArray &reviews, ArrayOperation &operations, Sentime
             operations.displaySearchedReviews(reviews, indicesBinaryLL, resultCountArrayLinear);
             auto arrlnstop = high_resolution_clock::now();
             // duration<double> arrlnduration = duration_cast<microseconds>(arrlnstop - arrlnstart);
-            duration<double, micro> arrlnduration = arrlnstop - arrlnstart;
+            duration<double, milli> arrlnduration = arrlnstop - arrlnstart;
 
             // Linear Search on Linked List
             auto lllnstart = high_resolution_clock::now();
@@ -275,22 +275,23 @@ void displayReviewMenu(CustomArray &reviews, ArrayOperation &operations, Sentime
             sentimentList.displaySearchedReviews(searchRating);
             auto lllnstop = high_resolution_clock::now();
             // duration<double> lllnduration = duration_cast<microseconds>(lllnstop - lllnstart);
-            duration<double, micro> lllnduration = lllnstop - lllnstart;
+            duration<double, milli> lllnduration = lllnstop - lllnstart;
 
-            // Display results for each search method
-            operations.displaySearchedReviews(reviews, indicesBinaryArray, resultCountArrayBinary);
+
+            cout << fixed << setprecision(2); 
 
             cout << "Done searching!" << endl;
-            cout << "Array Binary Search Time: " << arrduration.count() << " microseconds" << endl;
-            cout << "Linked List Binary Search Time: " << llduration.count() << " microseconds" << endl;
-            cout << "Array Linear Search Time: " << arrlnduration.count() << " microseconds" << endl;
-            cout << "Linked List Linear Search Time: " << lllnduration.count() << " microseconds" << endl;
+            cout << "Array Binary Search Time: " << arrduration.count() << " milliseconds" << endl;
+            cout << "Linked List Binary Search Time: " << llduration.count() << " milliseconds" << endl;
+            cout << "Array Linear Search Time: " << arrlnduration.count() << " milliseconds" << endl;
+            cout << "Linked List Linear Search Time: " << lllnduration.count() << " milliseconds" << endl;
 
             // Cleanup dynamically allocated memory
             delete[] indicesBinaryArray;
             delete[] indicesBinaryLL;
             delete[] indicesLinearArray;
             delete[] indicesLinearLL;
+            
 
             break;
         }
