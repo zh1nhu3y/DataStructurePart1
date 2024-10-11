@@ -10,8 +10,8 @@ Total Negative Words: 82618
 
 2. OVERALL SENTIMENT TREND
 
-Sentiment Ratio (positive words / positive words + negative words): 0.00%
-Trend: Predominantly Negative Sentiment
+Sentiment Ratio (positive words / positive words + negative words): 75.45%
+Trend: Predominantly Positive Sentiment
 
 
 3. WORD USAGE PATTERNS

@@ -319,20 +319,20 @@ int main()
     // std::string outputFile = "C:\\Users\\jason\\OneDrive - Asia Pacific University\\DEGREE APD2F2402\\YEAR 2 SEM 2\\DSTR\\Assignment\\cleaned_tripadvisor_hotel_reviews.csv";
 
     // MJ Input file path
-    std::string inputFile = "C:/Users/lawme/OneDrive - Asia Pacific University/Degree/Sem 2/Data Structure/Assignment/DSTR_P1_Data/tripadvisor_hotel_reviews.csv";
-    std::string outputFile = "C:/Users/lawme/OneDrive - Asia Pacific University/Degree/Sem 2/Data Structure/Assignment/DSTR_P1_Data/cleaned_tripadvisor_hotel_reviews.csv";
+    // std::string inputFile = "C:/Users/lawme/OneDrive - Asia Pacific University/Degree/Sem 2/Data Structure/Assignment/DSTR_P1_Data/tripadvisor_hotel_reviews.csv";
+    // std::string outputFile = "C:/Users/lawme/OneDrive - Asia Pacific University/Degree/Sem 2/Data Structure/Assignment/DSTR_P1_Data/cleaned_tripadvisor_hotel_reviews.csv";
 
     // Huey File path
-    // std::string inputFile = "C:/Users/Zhin Huey/OneDrive - Asia Pacific University/Degree Year2-SEM2/Data Structure/Assignement 1/tripadvisor_hotel_reviews.csv";
-    // std::string outputFile = "C:/Users/Zhin Huey/OneDrive - Asia Pacific University/Degree Year2-SEM2/Data Structure/Assignement 1/organized_hotel_reviews.csv";
+    std::string inputFile = "C:/Users/Zhin Huey/OneDrive - Asia Pacific University/Degree Year2-SEM2/Data Structure/Assignement 1/tripadvisor_hotel_reviews.csv";
+    std::string outputFile = "C:/Users/Zhin Huey/OneDrive - Asia Pacific University/Degree Year2-SEM2/Data Structure/Assignement 1/organized_hotel_reviews.csv";
 
     // Initialize custom array with a starting capacity
     CustomArray reviews(25000);
 
     // store positive words, negative words into array
     WordArray positiveWords, negativeWords;
-    positiveWords.loadWordsFromFile("C:/Users/lawme/OneDrive - Asia Pacific University/Degree/Sem 2/Data Structure/Assignment/DSTR_P1_Data/positive-words.txt");
-    negativeWords.loadWordsFromFile("C:/Users/lawme/OneDrive - Asia Pacific University/Degree/Sem 2/Data Structure/Assignment/DSTR_P1_Data/negative-words.txt");
+    positiveWords.loadWordsFromFile("C:/Users/Zhin Huey/OneDrive - Asia Pacific University/Degree Year2-SEM2/Data Structure/Assignement 1/positive-words.txt");
+    negativeWords.loadWordsFromFile("C:/Users/Zhin Huey/OneDrive - Asia Pacific University/Degree Year2-SEM2/Data Structure/Assignement 1/negative-words.txt");
 
     // Create a SentimentLinkedList to analyze the reviews
     SentimentLinkedList sentimentList(positiveWords, negativeWords);
