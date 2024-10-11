@@ -333,13 +333,25 @@ int main()
                     cout << "========================= Sentiment Analysis ==========================\n\n" << endl;
 
                     cout << "Start Sentiment Analyzing..." << endl;
+                    sentimentList.clear();
+                    // Add each reviews to the linked list
+                    for (int i = 0; i < reviews.getSize(); i++)
+                    {
+                        std::string reviewText = reviews.getReview(i);
+                        int reviewRating = reviews.getRating(i);
+                        sentimentList.insertAtEnd(reviewText, reviewRating);
+                    }
+                    cout << "Number of reviews loaded to list: " << sentimentList.getSize() << endl; // print number of reviews loaded
+
                     auto asstart = high_resolution_clock::now();
                     // Sentiment Analysis for all reviews
                     sentimentList.analyzeSentiment();  // <-- Calls the analyzeSentiment function
                     auto asend = high_resolution_clock::now();
 
-                    sentimentList.displaySentimentAnalysisResults();
+                    sentimentList.bubbleSortSentiment();
+                    // sentimentList.displaySentimentAnalysisResults();
                     duration<double> aduration = duration_cast<microseconds>(asend - asstart) ;
+
                     cout << "Sentiment Analysis Completed!" << endl;
                     cout << "Time taken: " << aduration.count() << " microseconds" << endl;
 
@@ -347,6 +359,7 @@ int main()
                     cout << "Saving into File..." << endl;
                     sentimentList.saveResultsToFile("sentiment_analysis_results.txt");
                     cout << "File Saved!" << endl;
+                    
 
                     break;
                 }
@@ -370,7 +383,7 @@ int main()
 
                 // Save sentiment analysis results to a file
                 cout << "Saving into File..." << endl;
-                sentimentList.saveResultsToFile("sentiment_comparison_results.txt");
+                sentimentComparison.saveComparisonToFile(sentimentList, "sentiment_comparison_results.txt"); // Save to file
                 cout << "File Saved!" << endl;
                 break;
             }

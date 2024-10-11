@@ -331,6 +331,8 @@ public:
         head = sorted; // Update the head to point to the sorted list
     }
 
+    // =========================================================================================================================
+
     // Quick sort function for linked list based on rating
     void quickSort(SentimentNode* head, SentimentNode* low, SentimentNode* high) {
         if (low != high && low != nullptr && high != nullptr && low != high->next) {
@@ -344,9 +346,6 @@ public:
             quickSort(head, pivot->next, high);
         }
     }
-
-
-
 
     // Partition function for quick sort
     SentimentNode* partition(SentimentNode* low, SentimentNode* high) {
@@ -372,8 +371,6 @@ public:
         return i;  // i is now the pivot
     }
 
-
-
     // Helper function to swap two nodes in the linked list
     void swap(SentimentNode* a, SentimentNode* b) {
         int tempRating = a->rating;
@@ -390,8 +387,6 @@ public:
     }
     return current;
 }
-
-
 
     SentimentNode *getHead()
     {
