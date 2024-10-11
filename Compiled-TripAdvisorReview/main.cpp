@@ -311,7 +311,7 @@ void displayReviewMenu(CustomArray &reviews, ArrayOperation &operations, Sentime
             auto lllnstop = high_resolution_clock::now();
             auto lllnduration = duration_cast<microseconds>(lllnstop - lllnstart);
 
-            cout << "Done searching!" << endl;
+            cout << "\nDone searching!" << endl;
 
             cout << "\n============== Timing Results ===============" << endl;
 
