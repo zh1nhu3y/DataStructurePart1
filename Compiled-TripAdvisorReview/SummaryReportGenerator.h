@@ -99,6 +99,7 @@ public:
 
         // 2. Overall Sentiment Trend - overall direction of sentiment (positive or negative)
         double sentimentRatio = totalReviews > 0 ? static_cast<double>(totalPositiveWords) / (totalPositiveWords + totalNegativeWords) : 0;
+
         outputFile << "\n\n2. OVERALL SENTIMENT TREND\n\n";
         outputFile << "Sentiment Ratio (positive words / positive words + negative words): "
                    << fixed << setprecision(2) << sentimentRatio * 100 << "%\n";
@@ -226,7 +227,7 @@ public:
         // 6. Detailed Word List
         outputFile << "\n\n6. DETAILED WORD FREQUENCY LIST\n\n";
 
-        outputFile << "Frequency of each words used in overall reviews, listed in descending order based on frequency using Insertion Sort\n\n";
+        outputFile << "Frequency of each word used in overall reviews, listed in descending order based on frequency using Insertion Sort\n\n";
 
         LinkedList<WordFrequency> wordFrequencies = getWordFrequencies();
 
@@ -342,17 +343,17 @@ private:
         auto startBubble = high_resolution_clock::now();
         bubbleSortList.bubbleSort();
         auto endBubble = high_resolution_clock::now();
-        auto bubbleDuration = duration_cast<microseconds>(endBubble - startBubble);
+        auto bubbleDuration = duration_cast<milliseconds>(endBubble - startBubble);
 
         // Time insertion sort
         auto startInsertion = high_resolution_clock::now();
         insertionSortList.insertionSort();
         auto endInsertion = high_resolution_clock::now();
-        auto insertionDuration = duration_cast<microseconds>(endInsertion - startInsertion);
+        auto insertionDuration = duration_cast<milliseconds>(endInsertion - startInsertion);
 
         // Output sorting times
-        cout << "\nBubble Sort Time: " << bubbleDuration.count() << " ms\n";
-        cout << "\nInsertion Sort Time: " << insertionDuration.count() << " ms\n\n";
+        cout << "\nBubble Sort Time: " << bubbleDuration.count() << " milliseconds\n";
+        cout << "\nInsertion Sort Time: " << insertionDuration.count() << " milliseconds\n\n";
 
         // Use any sort list for histogram (you could use either one)
         Node<WordFrequency> *current = insertionSortList.getHead();
