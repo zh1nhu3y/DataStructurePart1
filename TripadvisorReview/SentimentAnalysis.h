@@ -11,6 +11,8 @@
 #include <algorithm>
 #include <iomanip>
 
+#include "WordArray.h"
+
 using namespace std;
 
 // Struct to store words found in a linked list
