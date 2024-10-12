@@ -160,7 +160,7 @@ void displayReviewMenu(CustomArray &reviews, ArrayOperation &operations, Sentime
         {
             reviews.clear();                                                                                                                                            // Clear the list
             sentimentList.clear();                                                                                                                                      // Clear the list
-            cleanCSV("C:\\Users\\jason\\OneDrive - Asia Pacific University\\DEGREE APD2F2402\\YEAR 2 SEM 2\\DSTR\\Assignment\\tripadvisor_hotel_reviews.csv", reviews); // Load data from CSV file
+            cleanCSV("C:/Users/Zhin Huey/OneDrive - Asia Pacific University/Degree Year2-SEM2/Data Structure/Assignement 1/tripadvisor_hotel_reviews.csv", reviews); // Load data from CSV file
 
             for (int i = 0; i < reviews.getSize(); i++)
             {
@@ -211,7 +211,7 @@ void displayReviewMenu(CustomArray &reviews, ArrayOperation &operations, Sentime
             // ========= Bubble Sort ============
             reviews.clear();                                                                                                                                            // Clear the list
             sentimentList.clear();                                                                                                                                      // Clear the list
-            cleanCSV("C:\\Users\\jason\\OneDrive - Asia Pacific University\\DEGREE APD2F2402\\YEAR 2 SEM 2\\DSTR\\Assignment\\tripadvisor_hotel_reviews.csv", reviews); // Load data from CSV file
+            cleanCSV("C:/Users/Zhin Huey/OneDrive - Asia Pacific University/Degree Year2-SEM2/Data Structure/Assignement 1/tripadvisor_hotel_reviews.csv", reviews); // Load data from CSV file
 
             for (int i = 0; i < reviews.getSize(); i++)
             {
@@ -380,10 +380,10 @@ int main()
     ArrayOperation operations;
     WordArray positiveWords, negativeWords; 
     // Jason Input file path
-    std::string inputFile = "C:\\Users\\jason\\OneDrive - Asia Pacific University\\DEGREE APD2F2402\\YEAR 2 SEM 2\\DSTR\\Assignment\\tripadvisor_hotel_reviews.csv";
-    std::string outputFile = "C:\\Users\\jason\\OneDrive - Asia Pacific University\\DEGREE APD2F2402\\YEAR 2 SEM 2\\DSTR\\Assignment\\cleaned_tripadvisor_hotel_reviews.csv";
-    positiveWords.loadWordsFromFile("C:\\Users\\jason\\OneDrive - Asia Pacific University\\DEGREE APD2F2402\\YEAR 2 SEM 2\\DSTR\\Assignment\\positive-words.txt");
-    negativeWords.loadWordsFromFile("C:\\Users\\jason\\OneDrive - Asia Pacific University\\DEGREE APD2F2402\\YEAR 2 SEM 2\\DSTR\\Assignment\\negative-words.txt");
+    // std::string inputFile = "C:\\Users\\jason\\OneDrive - Asia Pacific University\\DEGREE APD2F2402\\YEAR 2 SEM 2\\DSTR\\Assignment\\tripadvisor_hotel_reviews.csv";
+    // std::string outputFile = "C:\\Users\\jason\\OneDrive - Asia Pacific University\\DEGREE APD2F2402\\YEAR 2 SEM 2\\DSTR\\Assignment\\cleaned_tripadvisor_hotel_reviews.csv";
+    // positiveWords.loadWordsFromFile("C:\\Users\\jason\\OneDrive - Asia Pacific University\\DEGREE APD2F2402\\YEAR 2 SEM 2\\DSTR\\Assignment\\positive-words.txt");
+    // negativeWords.loadWordsFromFile("C:\\Users\\jason\\OneDrive - Asia Pacific University\\DEGREE APD2F2402\\YEAR 2 SEM 2\\DSTR\\Assignment\\negative-words.txt");
     
     // MJ File path
     // positiveWords.loadWordsFromFile("C:/Users/lawme/OneDrive - Asia Pacific University/Degree/Sem 2/Data Structure/Assignment/DSTR_P1_Data/positive-words.txt");
@@ -392,29 +392,29 @@ int main()
     // std::string outputFile = "C:/Users/lawme/OneDrive - Asia Pacific University/Degree/Sem 2/Data Structure/Assignment/DSTR_P1_Data/cleaned_tripadvisor_hotel_reviews.csv";
 
     // Huey File path
-    // positiveWords.loadWordsFromFile("C:/Users/Zhin Huey/OneDrive - Asia Pacific University/Degree Year2-SEM2/Data Structure/Assignement 1/positive-words.txt");
-    // negativeWords.loadWordsFromFile("C:/Users/Zhin Huey/OneDrive - Asia Pacific University/Degree Year2-SEM2/Data Structure/Assignement 1/negative-words.txt");
-    // std::string inputFile = "C:/Users/Zhin Huey/OneDrive - Asia Pacific University/Degree Year2-SEM2/Data Structure/Assignement 1/tripadvisor_hotel_reviews.csv";
-    // std::string outputFile = "C:/Users/Zhin Huey/OneDrive - Asia Pacific University/Degree Year2-SEM2/Data Structure/Assignement 1/organized_hotel_reviews.csv";
+    positiveWords.loadWordsFromFile("C:/Users/Zhin Huey/OneDrive - Asia Pacific University/Degree Year2-SEM2/Data Structure/Assignement 1/positive-words.txt");
+    negativeWords.loadWordsFromFile("C:/Users/Zhin Huey/OneDrive - Asia Pacific University/Degree Year2-SEM2/Data Structure/Assignement 1/negative-words.txt");
+    std::string inputFile = "C:/Users/Zhin Huey/OneDrive - Asia Pacific University/Degree Year2-SEM2/Data Structure/Assignement 1/tripadvisor_hotel_reviews.csv";
+    std::string outputFile = "C:/Users/Zhin Huey/OneDrive - Asia Pacific University/Degree Year2-SEM2/Data Structure/Assignement 1/organized_hotel_reviews.csv";
   
     // Initialize custom array with a starting capacity
     CustomArray reviews(25000);
 
      // Clean the CSV file and store the data
-    // auto cleanstart = high_resolution_clock::now();
-    // cleanCSV(inputFile, reviews);
-    // auto cleanend = high_resolution_clock::now();
-    // duration<double, milli> cleanduration = cleanend - cleanstart;
-    // cout << "Loading and Cleaning Data Completed!" << endl;
+    auto cleanstart = high_resolution_clock::now();
+    cleanCSV(inputFile, reviews);
+    auto cleanend = high_resolution_clock::now();
+    duration<double, milli> cleanduration = cleanend - cleanstart;
+    cout << "Loading and Cleaning Data Completed!" << endl;
+    cout << "Time taken: " << cleanduration.count() << " milliseconds" << endl;
+
     // cout << "Time taken: " << cleanduration.count() << " milliseconds" << endl;
+    operations.insertionSortArray(reviews);
 
-    // // cout << "Time taken: " << cleanduration.count() << " milliseconds" << endl;
-    // operations.insertionSortArray(reviews);
-
-    // // Output cleaned reviews and ratings to a new CSV file
-    // cout << "Saving into File..." << endl;
-    // reviews.writeToFile(outputFile);
-    // cout << "File saved!" << endl;
+    // Output cleaned reviews and ratings to a new CSV file
+    cout << "Saving into File..." << endl;
+    reviews.writeToFile(outputFile);
+    cout << "File saved!" << endl;
     
     // Create a SentimentLinkedList to analyze the reviews
     SentimentLinkedList sentimentList(positiveWords, negativeWords);

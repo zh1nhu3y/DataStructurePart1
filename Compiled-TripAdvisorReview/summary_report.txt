@@ -22,7 +22,7 @@ Least impactful word: "luckier" (used 1 times)
 
 4. SENTIMENT INTENSITY
 
-Average sentiment words per review: 0.00
+Average sentiment words per review: 0.04
 Trend: Reviews are generally neutral or factual
 
 

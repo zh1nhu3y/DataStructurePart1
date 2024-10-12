@@ -3,7 +3,7 @@
  * SummaryReportGenerator.h
  *
  * This class processes reviews, analyzes sentiment using positive and negative
- * word lists, and generates detailed reports including statistics and visualizations
+ * word lists, and generates detailed summary report including statistics and visualizations.
  */
 
 #include <string>

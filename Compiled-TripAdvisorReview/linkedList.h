@@ -3,7 +3,7 @@
  *
  * A template-based linked list implementation designed to manage nodes containing words and their
  * frequencies. Includes basic operations like sorting and searching, along with
- * word frequency analysis functionalities
+ * word frequency analysis functionalities.
  */
 
 #include <iostream>
