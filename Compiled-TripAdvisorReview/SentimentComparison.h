@@ -3,8 +3,6 @@
 
 #include <iostream>
 #include <cmath> // For std::floor
-// #include "linkedlist.h" // This should contain LinkedList<SentimentNode>
-// #include "SentimentAnalysis.h" // Assuming this contains SentimentNode definition
 
 using namespace std;
 

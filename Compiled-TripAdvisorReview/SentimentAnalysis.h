@@ -150,7 +150,6 @@ public:
     // Binary Search to search words in review
     bool binarySearchSentiment(const WordArray &words, const string &word) const
     {
-        // auto start = high_resolution_clock::now();
         int low = 0;
         int high = words.getWordCount() - 1;
 
@@ -161,9 +160,6 @@ public:
 
             if (midWord == word)
             {
-                // auto stop = high_resolution_clock::now();
-                // auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(stop - start);
-                // cout << "Linked List Binary Search Time: " << duration.count() << " milliseconds" << endl;
                 return true; // Word found
             }
             else if (midWord < word)
@@ -175,9 +171,6 @@ public:
                 high = mid - 1; // Search in the left half
             }
         }
-        // auto stop = high_resolution_clock::now();
-        // auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(stop - start) / 1000;
-        // cout << "Linked List Binary Search Time: " << duration.count() << " seconds" << endl;
         return false; // Word not found
     }
 
@@ -545,21 +538,20 @@ public:
             std::cout << "No reviews found with rating " << searchRating << "." << std::endl;
         }
     }
-
-    void clear()
+    void setHead(SentimentNode* newHead)
     {
-        SentimentNode *current = head;
-        SentimentNode *nextNode;
+        head = newHead;
+    }
 
-        // Traverse through the linked list
-        while (current != nullptr)
-        {
-            nextNode = current->next; // Store the next node
-            delete current;           // Delete the current node
-            current = nextNode;       // Move to the next node
+    void clear() {
+        SentimentNode* current = head;
+        while (current != nullptr) {
+            SentimentNode* nextNode = current->next;  // Store next node
+            delete current;                            // Delete current node
+            current = nextNode;                       // Move to next node
         }
-
-        head = nullptr; // Reset head to null, indicating the list is empty
+        head = nullptr;  // Reset head to nullptr
+        size = 0;
     }
 
     void bubbleSortLinkedList()
@@ -649,6 +641,50 @@ public:
             currentWord = currentWord->next;
         }
         cout << endl; // End the line after printing all words
+    }
+    // ========================= Sentiment Comparison =====================================
+
+    void saveComparisonToFile(SentimentLinkedList &sentimentList, const string &filename)
+    {
+        ofstream outFile(filename); // Open the file for writing
+
+        if (!outFile) // Check if file opened successfully
+        {
+            cerr << "Error opening file: " << filename << endl;
+            return;
+        }
+
+        SentimentNode* current = sentimentList.getHead(); // Get the head node
+
+        while (current)
+        {
+            // Floor the sentiment score to the nearest integer
+            int flooredSentimentScore = static_cast<int>(std::floor(current->sentimentScore));
+
+            outFile << "Review: " << current->review << endl;
+            outFile << "Given Rating: " << current->rating << endl;
+            outFile << "Sentiment Score (floored): " << flooredSentimentScore << endl;
+
+            // Compare the floored sentiment score with the given rating
+            if (flooredSentimentScore == current->rating)
+            {
+                outFile << "User's subjective evaluation matches the sentiment score provided by the analysis." << endl;
+                outFile << "This suggests that the user's rating is consistent with the sentiment analysis." << endl;
+            }
+            else
+            {
+                outFile << "User's subjective evaluation does not match the sentiment score provided by the analysis." << endl;
+                outFile << "This implies a difference in the user's perception compared to the sentiment analysis." << endl;
+            }
+
+            outFile << "----------------------------------------" << endl;
+
+            // Move to the next review in the list
+            current = current->next;
+        }
+
+        outFile.close(); // Close the file after writing
+        cout << "Sentiment Comparison Results saved to: " << filename << endl;
     }
 };
 
