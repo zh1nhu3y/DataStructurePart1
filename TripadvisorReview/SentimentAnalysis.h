@@ -1,5 +1,5 @@
 /**
- *  SentimentAnalysis.cpp
+ *  SentimentAnalysis.h
  *  -> This file is to analyze a linked list of sentiment data from user reviews.
  */
 
@@ -9,11 +9,9 @@
 #include <fstream>
 #include <cmath>
 #include <algorithm>
-#include <chrono>
 #include <iomanip>
 
 using namespace std;
-using namespace std::chrono;
 
 // Struct to store words found in a linked list
 struct WordNode

@@ -3,8 +3,8 @@
 
 #include <iostream>
 #include <cmath> // For std::floor
-#include "linkedlist.h" // This should contain LinkedList<SentimentNode>
-#include "SentimentAnalysis.h" // Assuming this contains SentimentNode definition
+// #include "linkedlist.h" // This should contain LinkedList<SentimentNode>
+// #include "SentimentAnalysis.h" // Assuming this contains SentimentNode definition
 
 using namespace std;
 
@@ -14,7 +14,7 @@ public:
     // Function to compare sentiment score with the rating and display results
     void compareSentimentAndRating(SentimentLinkedList &sentimentList)
     {
-        SentimentNode* current = sentimentList.getHead(); // Get the head node
+        SentimentNode *current = sentimentList.getHead(); // Get the head node
 
         while (current)
         {

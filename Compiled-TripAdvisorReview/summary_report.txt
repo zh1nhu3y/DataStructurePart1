@@ -32,6 +32,9 @@ High frequency words (>70% of max): 2
 Medium frequency words (30-70% of max): 4
 Low frequency words (<30% of max): 3572
 
+High frequency words: great, good, 
+Medium frequency words: clean, nice, friendly, like, 
+
 
 6. DETAILED WORD FREQUENCY LIST
 
@@ -3617,7 +3620,7 @@ evasive: 1 times (0.0003%)
 invalid: 1 times (0.0003%)
 
 
-9. WORD FREQUENCY HISTOGRAM
+7. WORD FREQUENCY HISTOGRAM
 
 Histogram of Top 20 words used in overall reviews, presented in descending order based on frequency using Insertion Sort
 
@@ -3643,7 +3646,7 @@ fantastic       |███████ 2962
 problem         |██████ 2904
 
 
-10. SENTIMENT DISTRIBUTION GRAPH
+8. SENTIMENT DISTRIBUTION GRAPH
 
 Positive |█████████████████████████████████████ 253873 (75.4%)
 Negative |████████████ 82618 (24.6%)
