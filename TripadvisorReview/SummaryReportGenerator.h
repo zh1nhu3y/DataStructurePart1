@@ -163,26 +163,6 @@ public:
             outputFile << "Trend: Reviews show moderate emotional content\n";
         }
 
-        // // 5. Word Frequency Distribution
-        // outputFile << "\n\n5. WORD FREQUENCY DISTRIBUTION\n\n";
-        // int highFreq = 0, medFreq = 0, lowFreq = 0;
-        // current = frequencies.getHead();
-
-        // while (current != nullptr)
-        // {
-        //     if (current->data.frequency >= maxFreq * 0.7)
-        //         highFreq++;
-        //     else if (current->data.frequency >= maxFreq * 0.3)
-        //         medFreq++;
-        //     else
-        //         lowFreq++;
-        //     current = current->next;
-        // }
-
-        // outputFile << "High frequency words (>70% of max): " << highFreq << "\n";
-        // outputFile << "Medium frequency words (30-70% of max): " << medFreq << "\n";
-        // outputFile << "Low frequency words (<30% of max): " << lowFreq << "\n";
-
         // 5. Word Frequency Distribution
         outputFile << "\n\n5. WORD FREQUENCY DISTRIBUTION\n\n";
         int highFreq = 0, medFreq = 0, lowFreq = 0;
@@ -319,7 +299,6 @@ private:
                 allWords.insert(word);
             }
         }
-        // cout << "Finished analyzing review: " << review << endl;
     }
 
     // Sorted Histogram
