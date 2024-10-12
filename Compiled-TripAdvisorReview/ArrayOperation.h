@@ -60,9 +60,6 @@ public:
     // Function to sort reviews by rating using bubble sort
     void bubbleSortArray(CustomArray &reviews)
     {
-        // Start measuring time
-        auto start = high_resolution_clock::now();
-
         int n = reviews.getSize();
         bool swapped;
 
@@ -91,13 +88,6 @@ public:
             if (!swapped)
                 break;
         }
-
-        // Stop measuring time
-        auto stop = high_resolution_clock::now();
-        // duration<double> duration = duration_cast<milliseconds>(stop - start);
-        duration<double, milli> duration = stop - start;
-
-        cout << "\nTime taken for bubble sorting: " << duration.count() << " milliseconds" << endl;
     }
     // Function to display reviews
     void displayReviews(const CustomArray &reviews)

@@ -1,7 +1,7 @@
 
 /**
- *  SentimentAnalysis.cpp
- *  -> This class
+ *  SentimentAnalysis.h
+ *  -> This file is to analyze a linked list of sentiment data from user reviews.
  */
 
 #include <iostream>
@@ -10,10 +10,9 @@
 #include <fstream>
 #include <cmath>
 #include <algorithm>
-#include <chrono>
+#include <iomanip>
 
 using namespace std;
-using namespace std::chrono;
 
 // Struct to store words found in a linked list
 struct WordNode
@@ -237,7 +236,7 @@ public:
             outFile << "Negative Words Count: " << current->negativeCount << endl;
             outFile << "Negative Words Found: ";
             writeWordsToFile(outFile, current->negativeWordsList);
-            outFile << "Sentiment Score: " << current->sentimentScore << endl;
+            outFile << "Sentiment Score: " << std::fixed << std::setprecision(2) << current->sentimentScore << endl;
             outFile << "Given Rating: " << current->rating << endl;
             outFile << "----------------------------------------" << endl;
             current = current->next;

@@ -38,7 +38,7 @@ Medium frequency words: clean, nice, friendly, like,
 
 6. DETAILED WORD FREQUENCY LIST
 
-Frequency of each words used in overall reviews, listed in descending order based on frequency using Insertion Sort
+Frequency of each word used in overall reviews, listed in descending order based on frequency using Insertion Sort
 
 great: 21114 times (6.2748%)
 good: 16995 times (5.0507%)
